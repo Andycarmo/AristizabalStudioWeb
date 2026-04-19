@@ -1,15 +1,11 @@
-/* src/index.css */
-@import "tailwindcss";
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* Aquí puedes agregar estilos globales que afecten a toda la app */
 
 @font-face {
-  font-family: 'TuNombreDeFuente'; 
-  src: url('./assets/fonts/tu-archivo-fuente.ttf') format('truetype');
-}
-
-@theme {
-  --font-custom: 'TuNombreDeFuente', sans-serif;
-  --color-studio-green: #055651; /* El verde oscuro de tu imagen */
-  --color-studio-pink: #facdd5;  /* El rosado de las letras e iconos */
+  font-family: 'CocomatPro';
+  src: url('/fonts/CocomatPro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

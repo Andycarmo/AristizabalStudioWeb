@@ -1,40 +1,63 @@
-import React from 'react';
-import logo from './assets/logo.png'; // Asegúrate de que la ruta sea correcta
-import ytIcon from './assets/youtube.png';
-import igIcon from './assets/instagram.png';
-import tkIcon from './assets/tik-tok.png';
+//import React from 'react';
+import Logo from './assets/logo.svg?react'; // Asegúrate de que la ruta sea correcta
+//import ytIcon from './assets/youtube.svg';
+//import igIcon from './assets/instagram.svg';
+//import tkIcon from './assets/tik-tok.svg';
 
-const Navbar = () => {
+function Navbar() {
   return (
-    <nav className="bg-[#00473e] text-[#fbc6d0] px-6 py-4 flex items-center justify-between shadow-lg">
+   <nav className="bg-studio-green text-studio-pink px-6 py-4 shadow-md">
       
-      {/* LADO IZQUIERDO: Logo */}
-      <div className="flex items-center w-1/4">
-        <img src={logo} alt="Aristizabal Studio Logo" className="h-16 w-auto" />
-      </div>
+      <div className="max-w-7xl mx-auto flex items-center justify-between relative">
 
-      {/* CENTRO: Título con fuente personalizada */}
-      <div className="flex-1 text-center">
-        <h1 className="text-4xl md:text-5xl font-custom tracking-wide">
-          Aristizabal Studio
-        </h1>
-      </div>
+        {/* LOGO */}
+        <div className="flex items-center z-10">
+          <Logo className="text-studio-pink w-24 h-auto" />
+        </div>
 
-      {/* LADO DERECHO: Redes Sociales */}
-      <div className="flex items-center justify-end gap-4 w-1/4">
-        <a href="#" className="hover:opacity-80 transition-opacity">
-          <img src={ytIcon} alt="YouTube" className="h-8 w-8" />
-        </a>
-        <a href="#" className="hover:opacity-80 transition-opacity">
-          <img src={igIcon} alt="Instagram" className="h-8 w-8" />
-        </a>
-        <a href="#" className="hover:opacity-80 transition-opacity">
-          <img src={tkIcon} alt="TikTok" className="h-8 w-8" />
-        </a>
-      </div>
+        {/* TÍTULO CENTRADO REAL */}
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <h1 className="font-cocomat text-xl md:text-3xl tracking-wide">
+            Aristizabal Studio
+          </h1>
+        </div>
 
+        {/* DERECHA (RESERVADO PARA REDES O MENÚ) */}
+        <div className="flex items-center gap-4 z-10">
+          {/* futuro contenido */}
+        </div>
+
+          {/* REDES SOCIALES 
+        <div className="flex items-center gap-4 z-10">
+          
+          <a href="#" className="group">
+            <img 
+              src={ytIcon} 
+              alt="YouTube" 
+              className="h-6 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125"
+            />
+          </a>
+
+          <a href="#" className="group">
+            <img 
+              src={igIcon} 
+              alt="Instagram" 
+              className="h-6 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125"
+            />
+          </a>
+
+          <a href="#" className="group">
+            <img 
+              src={tkIcon} 
+              alt="TikTok" 
+              className="h-6 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125"
+            />
+          </a>
+
+        </div>*/}
+      </div>
     </nav>
   );
-};
+}
 
 export default Navbar;
