@@ -1,9 +1,4 @@
 /* src/index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Aquí puedes agregar estilos globales que afecten a toda la app */
-body {
-  @apply bg-slate-50 text-slate-900;
-}
