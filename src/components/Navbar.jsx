@@ -22,7 +22,12 @@ function Navbar() {
     //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-studio-green to-studio-green/80 text-studio-pink px-6 py-[clamp(0.5rem,1vw,0.75rem)] z-50 shadow-[0_6px_30px_rgba(0,0,0,0.35)]">
     //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive
-    <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+    //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+    //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive mejorado
+    <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] py-2 md:py-2 lg:py-1.5 z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+    {/*nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive mejorado y altura fija
+    //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] h-14 md:h-16 lg:h-14 flex items-center z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+    */}
     {/* MENU MOBILE 
       {menuOpen && (*/}
       <div
@@ -46,8 +51,10 @@ function Navbar() {
         <div className="flex items-center z-[60] shrink-0">
           {/*Logo con responsive
           //<Logo className="text-studio-pink w-20 sm:w-24 md:w-28 lg:w-32 h-auto" />*/}
-          {/*Logo con efecto emboss*/}
-          <Logo className="logo-emboss w-20 sm:w-24 md:w-28 lg:w-32 h-auto" />
+          {/*Logo con efecto emboss
+          <Logo className="logo-emboss w-20 sm:w-24 md:w-28 lg:w-32 h-auto" />*/}
+          {/*Logo mas reducido*/}
+          <Logo className="logo-emboss w-16 sm:w-20 md:w-22 lg:w-24 h-auto" />
           {/*Logo fijo
           <Logo className="text-studio-pink w-24 h-auto" />*/}
         </div>

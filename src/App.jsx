@@ -8,11 +8,11 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <div className="pt-32 md:pt-40">
+      {/*<div className="pt-32 md:pt-40">*/}
         <Hero />
-      </div>
-      {/* BLOQUE EN BLANCO */}
-      <div className="h-[10vh] bg-white"></div>
+      {/*</div>
+      {/* BLOQUE EN BLANCO 
+      <div className="h-[10vh] bg-white"></div>*/}
       <About />
       <Gallery />
       <Footer />
