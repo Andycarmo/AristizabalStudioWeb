@@ -1,7 +1,7 @@
-import Logo from '../assets/logo.svg?react'; // Asegúrate de que la ruta sea correcta
-import YoutubeIcon from '../assets/youtube.svg?react';
-import InstagramIcon from '../assets/instagram.svg?react';
-import TikTokIcon from '../assets/tik-tok.svg?react';
+import Logo from '../../assets/logo.svg?react'; // Asegúrate de que la ruta sea correcta
+import YoutubeIcon from '../../assets/youtube.svg?react';
+import InstagramIcon from '../../assets/instagram.svg?react';
+import TikTokIcon from '../../assets/tik-tok.svg?react';
 import { useState } from "react";
 
 function Navbar() {
