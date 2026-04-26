@@ -23,13 +23,19 @@ export default function About() {
   return (
     <section
       ref={sectionRef}
-      className="bg-studio-pink text-studio-green py-16 px-4 opacity-0 translate-y-10 transition-all duration-700 ease-out"
+      className="
+        bg-studio-pink text-studio-green
+        -mt-16 md:-mt-20   {/* 👈 CLAVE */}
+        py-16 px-4
+        opacity-0 translate-y-10
+        transition-all duration-700 ease-out
+      "
     >
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         
         {/* IMAGEN */}
-        <div className="w-full">
-          <div className="relative w-full h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] overflow-hidden rounded-2xl shadow-lg">
+        <div className="w-full flex justify-center items-center py-10">
+            <div className="relative w-[70%] sm:w-[60%] md:w-[60%] lg:w-[60%] aspect-[1/1.5] overflow-hidden rounded-2xl shadow-lg">
             
             <img
               src="/Artista.jpg"

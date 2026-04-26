@@ -13,14 +13,14 @@ export default function Footer() {
         <Logo className="w-20 h-auto" />
 
         {/* NOMBRE */}
-        <h3 className="text-xl md:text-2xl font-semibold text-center">
+        <h3 className="text-xl md:text-2xl font-cocomat text-center">
           Aristizabal Studio
         </h3>
 
         {/* REDES */}
         <div className="flex items-center gap-6">
           
-          <a href="#" className="group">
+          <a href="https://www.youtube.com/@aristizabalstudio" className="group">
             <YoutubeIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
@@ -28,7 +28,7 @@ export default function Footer() {
             <InstagramIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
-          <a href="#" className="group">
+          <a href="https://www.tiktok.com/@aristizabal.studio" className="group">
             <TikTokIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 

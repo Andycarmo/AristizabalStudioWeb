@@ -16,8 +16,8 @@ function Navbar() {
     //nav con gradiente y transparencia mejorada  
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-studio-green to-studio-pink text-white px-6 py-4 shadow-md z-50">
     //nav con gradiente y transparencia mejorada y borde inferior efecto blur
-    //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-studio-green/80 to-studio-green/60 backdrop-blur-md text-studio-pink px-6 py-4 shadow-md z-50 border-b border-white/10">
-    //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado
+    <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-studio-green/80 to-studio-green/60 backdrop-blur-md text-studio-pink px-6 py-4 shadow-md z-50 border-b border-white/10">
+    {/*//nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-studio-green to-studio-green/80 text-studio-pink px-6 py-4 shadow-md z-50">
     //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-studio-green to-studio-green/80 text-studio-pink px-6 py-[clamp(0.5rem,1vw,0.75rem)] z-50 shadow-[0_6px_30px_rgba(0,0,0,0.35)]">
@@ -25,7 +25,7 @@ function Navbar() {
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] py-[clamp(0.5rem,1vw,0.75rem)] z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
     //nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive mejorado
     <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] py-2 md:py-2 lg:py-1.5 z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
-    {/*nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive mejorado y altura fija
+    nav con gradiente y transparencia mejorada y borde inferior efecto blur mejorado y sombra personalizada y padding responsive mejorado y altura fija
     //<nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-studio-green to-[#0f3d2e] text-studio-pink px-[clamp(1rem,4vw,2rem)] h-14 md:h-16 lg:h-14 flex items-center z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
     */}
     {/* MENU MOBILE 
@@ -91,8 +91,8 @@ function Navbar() {
           {/* REDES SOCIALES - version anterior
         <div className="flex items-center gap-6 z-10">*/}
         <div className="hidden md:flex items-center gap-6 z-10">  
-          <a href="#" className="group">
-            
+
+          <a href="https://www.youtube.com/@aristizabalstudio" className="group">
             {/*<YoutubeIcon className="h-6 md:h-8 w-auto text-studio-pink transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125"*/}
             <YoutubeIcon className="icon-emboss h-6 md:h-8 w-auto transition-transform duration-300 hover:scale-110 hover:brightness-125" />
           </a>
@@ -103,7 +103,7 @@ function Navbar() {
             
           </a>
 
-          <a href="#" className="group">
+          <a href="https://www.tiktok.com/@aristizabal.studio" className="group">
            <TikTokIcon className="icon-emboss h-6 md:h-7 w-auto transition-transform duration-300 hover:scale-110 hover:brightness-125" />
            {/*<TikTokIcon className="h-6 md:h-7 w-auto text-studio-pink transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125"*/}
             
