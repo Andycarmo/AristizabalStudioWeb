@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "../components/layout/Navbar";
+import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 
 const artworks = [
@@ -42,8 +42,9 @@ export default function Store() {
       : artworks.filter((a) => a.category === filter);
 
   return (
-    <div className="min-h-screen flex flex-col bg-studio-pink text-studio-green">
-      <Navbar />
+    <div className="min-h-screen bg-white pt-24">
+    <div className="min-h-screen flex flex-col bg-[#e9dfd8] text-studio-green">
+      <Header />
 
       <main className="flex-1 px-6 py-12 max-w-7xl mx-auto">
 
@@ -107,6 +108,7 @@ export default function Store() {
       </main>
 
       <Footer />
+    </div>
     </div>
   );
 }
