@@ -38,9 +38,10 @@ export default function About() {
             <div className="relative w-[70%] sm:w-[60%] md:w-[60%] lg:w-[60%] aspect-[1/1.5] overflow-hidden rounded-2xl shadow-lg">
             
             <img
-              src="/Artista.jpg"
-              alt="Artista"
-              className="w-full h-full object-cover"
+                src="/gallery/artista/exterior-01.webp"
+                alt="Artista pintando exterior"
+                loading="lazy"
+                className="w-full h-full object-cover"
             />
 
           </div>

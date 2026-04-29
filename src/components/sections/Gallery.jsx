@@ -1,4 +1,13 @@
 export default function Gallery() {
+const images = [
+    "/gallery/obras/aves-marcadores.webp",
+    "/gallery/obras/bouquet-gouache.webp",
+    "/gallery/obras/dahlia-sketch.webp",
+    "/gallery/obras/tucan-sketch.webp",
+
+  ];
+
+
   return (
     <section className="bg-[#FFE091] -mt-16 md:-mt-20 py-16 px-4 ">
       
@@ -22,8 +31,9 @@ export default function Gallery() {
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/Cuadro-Peces.jpg"
+              src="/gallery/obras/aves-marcadores.webp"
               alt="obra"
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>
@@ -35,8 +45,9 @@ export default function Gallery() {
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/Cuadro-Peces.jpg"
+              src="/gallery/obras/bouquet-gouache.webp"
               alt="obra"
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>
@@ -48,8 +59,9 @@ export default function Gallery() {
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/Cuadro-Peces.jpg"
+              src="/gallery/obras/dahlia-sketch.webp"
               alt="obra"
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>
@@ -61,8 +73,9 @@ export default function Gallery() {
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/Cuadro-Peces.jpg"
+              src="/gallery/obras/tucan-sketch.webp"
               alt="obra"
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>

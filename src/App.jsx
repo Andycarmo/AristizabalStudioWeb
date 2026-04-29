@@ -1,28 +1,18 @@
-import Hero from './components/sections/Hero';
-import Navbar from './components/layout/Navbar';
-import SectionBar from "./components/layout/SectionBar";
-import Gallery from "./components/sections/Gallery";
-import About from './components/sections/About';
-import Footer from "./components/layout/Footer";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Store from "./pages/Store";
+import AboutPage from "./pages/AboutPage";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      {/*<div className="pt-32 md:pt-40">*/}
-        <Hero />
-      {/*</div>
-      {/* BLOQUE EN BLANCO 
-      <div className="h-[10vh] bg-white"></div>*/}
-      <SectionBar title="Gallery" />
-      <Gallery />
-      <SectionBar title="About Me" />
-      <About />
-      <Footer />
-
-    </div>
-    
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/tienda" element={<Store />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<Contact />} />
+    </Routes>
   );
 }
 
-export default App
+export default App;
