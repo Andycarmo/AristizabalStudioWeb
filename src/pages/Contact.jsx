@@ -89,7 +89,7 @@ export default function Contact() {
         {/* IMAGEN */}
         <div className="flex justify-center">
           <img
-            src="/gallery/obras/flower-16.webp"
+            src="/gallery/obras/flores/flower-16.webp"
             alt="Artwork"
             className="w-full max-w-md object-cover shadow-lg"
           />

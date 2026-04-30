@@ -19,15 +19,18 @@ export default function Footer() {
 
         {/* REDES */}
         <div className="flex items-center gap-6">
-          
+
+        {/* >>>>>>>>>>>>>   YOUTUBE    <<<<<<<<<<<<<<<*/}
           <a href="https://www.youtube.com/@aristizabalstudio" className="group">
-            <YoutubeIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
+            <YoutubeIcon className="h-7 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
+        {/* >>>>>>>>>>>>>   INSTAGRAM    <<<<<<<<<<<<<<<*/}
           <a href="#" className="group">
             <InstagramIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
+        {/* >>>>>>>>>>>>>   TIKTOK    <<<<<<<<<<<<<<<*/}
           <a href="https://www.tiktok.com/@aristizabal.studio" className="group">
             <TikTokIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>

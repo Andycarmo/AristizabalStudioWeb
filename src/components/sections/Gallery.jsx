@@ -1,9 +1,17 @@
 export default function Gallery() {
 const images = [
-    "/gallery/obras/aves-marcadores.webp",
-    "/gallery/obras/bouquet-gouache.webp",
-    "/gallery/obras/dahlia-sketch.webp",
-    "/gallery/obras/tucan-sketch.webp",
+    "/gallery/obras/aves/aves-marcadores.webp",
+    "/gallery/obras/flores/bouquet-gouache.webp",
+    "/gallery/obras/flores/dahlia-sketch.webp",
+    "/gallery/obras/aves/tucan-sketch.webp",
+    "/gallery/obras/aves/aves-marcadores.webp",
+    "/gallery/obras/flores/bouquet-gouache.webp",
+    "/gallery/obras/flores/dahlia-sketch.webp",
+    "/gallery/obras/aves/tucan-sketch.webp",
+    "/gallery/obras/aves/aves-marcadores.webp",
+    "/gallery/obras/flores/bouquet-gouache.webp",
+    "/gallery/obras/flores/dahlia-sketch.webp",
+    "/gallery/obras/aves/tucan-sketch.webp",
 
   ];
 
@@ -31,7 +39,7 @@ const images = [
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/gallery/obras/aves-marcadores.webp"
+              src="/gallery/obras/aves/aves-marcadores.webp"
               alt="obra"
               loading="lazy"
               className="w-full h-full object-cover"
@@ -45,7 +53,7 @@ const images = [
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/gallery/obras/bouquet-gouache.webp"
+              src="/gallery/obras/flores/bouquet-gouache.webp"
               alt="obra"
               loading="lazy"
               className="w-full h-full object-cover"
@@ -59,7 +67,7 @@ const images = [
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/gallery/obras/dahlia-sketch.webp"
+              src="/gallery/obras/flores/dahlia-sketch.webp"
               alt="obra"
               loading="lazy"
               className="w-full h-full object-cover"
@@ -73,7 +81,7 @@ const images = [
             hover:scale-105 hover:shadow-xl
           ">
             <img
-              src="/gallery/obras/tucan-sketch.webp"
+              src="/gallery/obras/aves/tucan-sketch.webp"
               alt="obra"
               loading="lazy"
               className="w-full h-full object-cover"

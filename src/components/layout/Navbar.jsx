@@ -17,7 +17,7 @@ function Navbar({ isMobile = false, onNavigate }) {
       </NavLink>
 
       <NavLink to="/tienda" className={baseClass + " " + linkClass} onClick={onNavigate}>
-        Store
+        Gallery
       </NavLink>
 
       <NavLink to="/about" className={baseClass + " " + linkClass} onClick={onNavigate}>

@@ -21,12 +21,12 @@ function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between relative">
 
         {/* LOGO */}
-        <div className="flex items-center z-[60] shrink-0">
+        <div className="fade-up-05 flex items-center z-[60] shrink-0">
           <Logo className="logo-emboss w-16 sm:w-20 md:w-22 lg:w-24 h-auto" />
         </div>
 
         {/* TÍTULO + NAV */}
-        <div className="flex flex-col items-center justify-center z-[60] flex-1">
+        <div className="fade-up-05 flex flex-col items-center justify-center z-[60] flex-1">
           <h1 className="title-emboss font-cocomat text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide text-center">
             Aristizabal Studio
           </h1>
@@ -46,18 +46,23 @@ function Header() {
         </div>
 
         {/* REDES */}
-        <div className="hidden md:flex items-center gap-6 z-10">
-          <a href="https://www.youtube.com/@aristizabalstudio" target="_blank" rel="noopener noreferrer">
-            <YoutubeIcon className="icon-emboss h-6 md:h-8" />
+        <div className="fade-up-2 md:flex items-center gap-6 z-10">
+
+          {/* >>>>>>>>>>>>>   YOUTUBE    <<<<<<<<<<<<<<<*/}
+          <a href="https://www.youtube.com/@aristizabalstudio" target="_blank" rel="noopener noreferrer" className="group">
+            <YoutubeIcon className="h-7 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
-          <a href="#">
-            <InstagramIcon className="icon-emboss h-6 md:h-6" />
+          {/* >>>>>>>>>>>>>   INSTAGRAM    <<<<<<<<<<<<<<<*/}
+          <a href="https://www.instagram.com/aristizabal.studio" target="_blank" rel="noopener noreferrer" className="group">
+            <InstagramIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
 
-          <a href="https://www.tiktok.com/@aristizabal.studio" target="_blank" rel="noopener noreferrer">
-            <TikTokIcon className="icon-emboss h-6 md:h-7" />
+          {/* >>>>>>>>>>>>>   TIKTOK    <<<<<<<<<<<<<<<*/}
+          <a href="https://www.tiktok.com/@aristizabal.studio" target="_blank" rel="noopener noreferrer" className="group">
+            <TikTokIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
+
         </div>
 
       </div>
