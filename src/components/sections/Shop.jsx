@@ -19,8 +19,11 @@ export default function Shop() {
             <img
               src="/gallery/obras/flores/flower-15.webp"
               alt="Shop preview"
-              className="w-auto h-auto max-w-[360px] object-contain"
               loading="lazy"
+              className="w-auto h-auto max-w-[360px] object-contain
+              transition-transform duration-500 ease-out
+              hover:scale-105"
+              
             />
           </div>
         </div>

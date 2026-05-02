@@ -16,10 +16,13 @@ export default function Hero() {
     <section className="relative h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[80vh] overflow-hidden">
 
       {/* FONDO PARALLAX */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat will-change-transform"
+     <img
+        src="/Cuadro-Hero.webp"
+        alt="Hero"
+        loading="eager"
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover will-change-transform"
         style={{
-          backgroundImage: "url('/Cuadro-Hero.webp')",
           transform: `translateY(${offset * 0.3}px)`
         }}
       />

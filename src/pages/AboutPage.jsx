@@ -36,6 +36,9 @@ export default function AboutPage() {
             <img
               src="/gallery/artista/floor-02.webp"
               alt="studio"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="w-full max-w-md mx-auto h-auto rounded-2xl shadow-lg object-cover"
             />
           </div>
@@ -57,6 +60,8 @@ export default function AboutPage() {
             <img
               src="/gallery/artista/taller-03.webp"
               alt="process"
+              loading="lazy"
+              decoding="async"
               className="w-full max-w-md mx-auto h-auto rounded-2xl shadow-lg object-cover"
             />
           </div>
@@ -102,6 +107,8 @@ export default function AboutPage() {
             <img
               src="/gallery/artista/floor-01.webp"
               alt="inspiration"
+                loading="lazy"
+                decoding="async"
               className="w-full max-w-md mx-auto h-auto rounded-2xl shadow-lg object-cover"
             />
           </div>
