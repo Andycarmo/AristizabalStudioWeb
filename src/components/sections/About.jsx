@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Orquidea from '../../assets/logos/Orquidea.svg?react';
+import Ave from '../../assets/ave.svg?react';
 
 export default function About() {
   const sectionRef = useRef(null);
@@ -25,14 +26,14 @@ export default function About() {
     <section
       ref={sectionRef}
       className="
-        bg-studio-pink text-studio-green
+        relative bg-studio-pink text-studio-green
         -mt-16 md:-mt-20   {/* 👈 CLAVE */}
         py-16 px-4
         opacity-0 translate-y-10
         transition-all duration-700 ease-out
       "
     >
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         
         {/* IMAGEN */}
         <div className="w-full flex justify-center items-center py-10">
@@ -43,19 +44,42 @@ export default function About() {
                 src="/gallery/artista/exterior-01.webp"
                 alt="Artista pintando exterior"
                 loading="lazy"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover
+                rounded-2xl
+                shadow-[0_20px_60px_rgba(0,0,0,0.3)]
+                transition-transform duration-500 ease-out
+                hover:scale-105"
             />
                        {/* SVG OVERLAY */}
-                <Orquidea className="
-    absolute 
-    bottom-0 left-0
-    w-64 md:w-80 lg:w-[30rem]
-    text-[#FFE091]
-    opacity-80
-    pointer-events-none
-    z-20
-  "
-  preserveAspectRatio="xMidYMid meet"/>
+                <Orquidea
+                  className="absolute pointer-events-none"
+                      style={{
+                      color: 'orange',
+                      top: '250px',
+                      left: '-200px',
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 0,
+                      opacity: 0.6,
+                    
+                           }}
+                    preserveAspectRatio="xMidYMid meet"
+                    />
+
+                  <Ave
+                    className="absolute pointer-events-none"
+                      style={{
+                      color: 'blue',
+                      top: '0px',
+                      left: '900px',
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 0,
+                      opacity: 0.2,
+                    
+                           }}
+                    preserveAspectRatio="xMidYMid meet"
+                  />
 
           </div>
 
