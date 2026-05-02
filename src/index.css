@@ -33,6 +33,57 @@
   filter: brightness(1.1);
 }
 
+.block-orange{
+  position: relative;
+  display: inline;
+}
+
+.block-orange::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;        /* distancia debajo del texto */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;         /* más ancho que la palabra */
+  height: 60px;         /* grosor del cuadro */
+  background-color: #c55c1e;
+  z-index: -1;
+}
+
+.block-pink{
+  position: relative;
+  display: inline;
+}
+
+.block-pink::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;        /* distancia debajo del texto */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;         /* más ancho que la palabra */
+  height: 60px;         /* grosor del cuadro */
+  background-color: #FACDD5;
+  z-index: -1;
+}
+
+.block-fucsia{
+  position: relative;
+  display: inline;
+}
+
+.block-fucsia::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;        /* distancia debajo del texto */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;         /* más ancho que la palabra */
+  height: 60px;         /* grosor del cuadro */
+  background-color: #DE5D83;
+  z-index: -1;
+}
+
 .icon-emboss {
   color: #e7b6b6;
 

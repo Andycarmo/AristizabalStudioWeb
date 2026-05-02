@@ -9,14 +9,38 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
+    <>
+          {/* MENU MOBILE */}
+      <div className={`fixed inset-0 bg-studio-green backdrop-blur-md flex flex-col items-center justify-center gap-10 z-[999] transition-all duration-500 ${
+          menuOpen 
+           ? "translate-y-0 opacity-100 pointer-events-auto"
+        : "translate-y-full opacity-0 pointer-events-none"
+        }`}>
+
+          {/* NAV MOBILE */}
+          <Navbar isMobile onNavigate={() => setMenuOpen(false)} />
+
+          {/* REDES MOBILE */}
+          <div className="flex items-center gap-8 mt-6">
+
+            <a href="https://www.youtube.com/@aristizabalstudio" target="_blank" rel="noopener noreferrer" className="group">
+              <YoutubeIcon className="h-8 w-auto transition-all duration-300 group-hover:scale-110 group-hover:brightness-125" />
+            </a>
+
+            <a href="https://www.instagram.com/aristizabal.studio" target="_blank" rel="noopener noreferrer" className="group">
+              <InstagramIcon className="h-7 w-auto transition-all duration-300 group-hover:scale-110 group-hover:brightness-125" />
+            </a>
+
+            <a href="https://www.tiktok.com/@aristizabal.studio" target="_blank" rel="noopener noreferrer" className="group">
+              <TikTokIcon className="h-7 w-auto transition-all duration-300 group-hover:scale-110 group-hover:brightness-125" />
+            </a>
+
+          </div>
+
+      </div>
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-studio-green/80 to-studio-green/60 backdrop-blur-md text-studio-pink px-6 py-4 shadow-md z-50 border-b border-white/10">
 
-      {/* MENU MOBILE */}
-      <div className={`fixed inset-0 bg-studio-green/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 z-50 transition-all duration-500 ${
-        menuOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
-      }`}>
-        <Navbar isMobile onNavigate={() => setMenuOpen(false)} />
-      </div>
+
 
       <div className="max-w-7xl mx-auto flex items-center justify-between relative">
 
@@ -46,7 +70,7 @@ function Header() {
         </div>
 
         {/* REDES */}
-        <div className="fade-up-2 md:flex items-center gap-6 z-10">
+        <div className="fade-up-2 hidden md:flex items-center gap-6 z-10">
 
           {/* >>>>>>>>>>>>>   YOUTUBE    <<<<<<<<<<<<<<<*/}
           <a href="https://www.youtube.com/@aristizabalstudio" target="_blank" rel="noopener noreferrer" className="group">
@@ -67,6 +91,7 @@ function Header() {
 
       </div>
     </header>
+    </>
   );
 }
 

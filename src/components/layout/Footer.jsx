@@ -39,7 +39,7 @@ export default function Footer() {
 
         {/* COPYRIGHT */}
         <p className="text-sm text-center opacity-80">
-          © {new Date().getFullYear()} Aristizabal Studio. Todos los derechos reservados.
+          © {new Date().getFullYear()} Aristizabal Studio. All rights reserved. Made with ❤ by myself.
         </p>
 
       </div>

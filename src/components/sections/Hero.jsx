@@ -31,11 +31,11 @@ export default function Hero() {
       <div className="relative z-10 flex items-center h-full px-6 md:px-12 lg:px-20">
         <div className="fade-up-3 max-w-xl text-left">
           
-          <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-cocomat tracking-wide leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-            A creative space for storytelling through vibrant illustrations and thoughtful design.
+          <h1 className="text-white -mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-cocomat tracking-wide leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+            A <span className="block-orange">creative</span> space for storytelling through <span className="block-fucsia">vibrant</span> illustrations and thoughtful design.
           </h1>
 
-
+         
         </div>
       </div>
 
