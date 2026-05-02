@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
+import AveMarcadores from '../../assets/ave-marcadores.svg?react';
 
 export default function Shop() {
   return (
-    <section className="bg-[#DE5D83] -mt-16 md:-mt-20 py-16 px-4 ">
+    <section 
+    className="
+    relative bg-[#DE5D83] 
+    -mt-16 md:-mt-20 
+    py-16 px-4 ">
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-center gap-12">
 
+                  
+
         {/* IMAGEN (invertida vs Works) */}
-        <div className="flex-1 flex justify-center">
+        <div className="z-10 flex-1 flex justify-center">
           <div className="inline-block rounded-2xl overflow-hidden shadow-xl">
             <img
               src="/gallery/obras/flores/flower-15.webp"
@@ -18,8 +25,21 @@ export default function Shop() {
           </div>
         </div>
 
+                <AveMarcadores
+                    className="absolute pointer-events-none
+                     w-[80%] sm:w-[50%] md:w-[50%] lg:w-[50%] h-auto
+                      -left-20 sm:-left-36 md:-left-40 lg:-left-60
+                      top-52 sm:top-32 md:top-6 lg:top-0
+                      opacity-50 md:opacity-60"
+
+                      style={{
+                      color: '#ffa2b3',                  
+                           }}
+                    preserveAspectRatio="xMidYMid meet"
+                  />
+
         {/* TEXTO */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center">
+        <div className="z-20 w-full md:w-1/2 flex flex-col justify-center">
           
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
             Shop

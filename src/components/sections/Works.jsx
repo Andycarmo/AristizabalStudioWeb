@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom"; // si usas React Router
+import Bouquet from '../../assets/bouquet.svg?react';
 
 export default function Gallery() {
   return (
-    <section className="bg-[#FFE091] -mt-16 md:-mt-20 py-16 px-4 ">
+    <section className="
+    relative bg-[#FFE091] 
+    -mt-16 md:-mt-20 
+    py-16 px-4 ">
       
       {/* CONTENEDOR */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -14,7 +18,7 @@ export default function Gallery() {
         </h2>*/}
 
          {/* IMAGEN */}
-        <div className="w-full md:w-1/2">
+        <div className="z-10 w-full md:w-1/2">
           <div className="rounded-2xl overflow-hidden shadow-xl">
             <img
               src="/gallery/obras/miscelaneous/collage-01.webp"
@@ -25,8 +29,21 @@ export default function Gallery() {
           </div>
         </div>
 
+                  <Bouquet    
+                    className="absolute pointer-events-none
+                     w-[80%] sm:w-[50%] md:w-[50%] lg:w-[50%] h-auto
+                      -right-20 sm:-right-36 md:-right-40 lg:-right-60
+                      top-52 sm:top-32 md:top-6 lg:top-0
+                      opacity-50 md:opacity-60"
+
+                      style={{
+                      color: '#e9bf55',                  
+                           }}
+                    preserveAspectRatio="xMidYMid meet"
+                  />
+
         {/* TEXTO */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center">
+        <div className="z-20 w-full md:w-1/2 flex flex-col justify-center">
           
           <h2 className="text-3xl md:text-5xl font-bold text-studio-green mb-6">
             Recent Works

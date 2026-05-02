@@ -12,6 +12,7 @@ module.exports = {
        colors: {
         'studio-green': '#055651',
         'studio-pink': '#facdd5',
+        'studio-dark-pink': '#fa8da1',
         },
     },
   },

@@ -35,6 +35,20 @@ export default function About() {
     >
       <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         
+
+                  <Ave
+                    className="absolute pointer-events-none
+                     w-[80%] sm:w-[50%] md:w-[50%] lg:w-[50%] h-auto
+                      -right-20 sm:-right-36 md:-right-40 lg:-right-60
+                      top-52 sm:top-32 md:top-6 lg:top-0
+                      opacity-50 md:opacity-60"
+
+                      style={{
+                      color: '#ffa2b3',                  
+                           }}
+                    preserveAspectRatio="xMidYMid meet"
+                  />
+
         {/* IMAGEN */}
         <div className="w-full flex justify-center items-center py-10">
             <div className="relative w-[70%] sm:w-[60%] md:w-[60%] lg:w-[60%] aspect-[1/1.5] rounded-2xl shadow-lg">
@@ -52,41 +66,26 @@ export default function About() {
             />
                        {/* SVG OVERLAY */}
                 <Orquidea
-                  className="absolute pointer-events-none"
+                  className="absolute pointer-events-none 
+                      w-[80%] sm:w-[80%] md:w-[70%] lg:w-[70%] h-auto
+                      -left-20 sm:-left-31.5 md:left-75
+                      top-[70%] md:top-[70%]
+                      opacity-80 md:opacity-80"
+
                       style={{
-                      color: 'orange',
-                      top: '250px',
-                      left: '-200px',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: 0,
-                      opacity: 0.6,
-                    
+                      color: '#f1748b',                  
                            }}
                     preserveAspectRatio="xMidYMid meet"
                     />
 
-                  <Ave
-                    className="absolute pointer-events-none"
-                      style={{
-                      color: 'blue',
-                      top: '0px',
-                      left: '900px',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: 0,
-                      opacity: 0.2,
-                    
-                           }}
-                    preserveAspectRatio="xMidYMid meet"
-                  />
+
 
           </div>
 
         </div>
 
         {/* TEXTO */}
-        <div className="text-center md:text-left">
+        <div className="text-center md:text-left z-10">
           
           <h2 className="font-cocomat text-3xl md:text-4xl font-bold mb-6">
             About Me
