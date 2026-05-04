@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import Button, { buttonColors } from "../../components/ui/Button.jsx";
 import Orquidea from '../../assets/logos/Orquidea.svg?react';
 import Ave from '../../assets/ave.svg?react';
 
@@ -26,82 +28,114 @@ export default function About() {
     <section
       ref={sectionRef}
       className="
-        relative bg-studio-pink text-studio-green
-        -mt-16 md:-mt-20   {/* 👈 CLAVE */}
+        relative bg-studio-pink 
+        -mt-16 md:-mt-20  
         py-16 px-4
+        overflow-hidden
         opacity-0 translate-y-10
         transition-all duration-700 ease-out
       "
     >
-      <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      {/* CONTENEDOR */}
+      <div 
+      className="
+        max-w-7xl mx-auto
+        flex flex-col md:flex-row 
+        gap-12">
         
 
-                  <Ave
-                    className="absolute pointer-events-none
-                     w-[80%] sm:w-[50%] md:w-[50%] lg:w-[50%] h-auto
-                      -right-20 sm:-right-36 md:-right-40 lg:-right-60
-                      top-52 sm:top-32 md:top-6 lg:top-0
-                      opacity-50 md:opacity-60"
+          <Ave
+            className="
+            absolute pointer-events-none
+            w-[80%] sm:w-[50%] md:w-[50%] lg:w-[50%] h-auto
+            right-[0%] sm:right-[-20%] md:right-[-25%] lg:right-0 translate-x-[25%]
+            top-[65%] sm:top-[50%] md:top-[45%] lg:top-[10%]
+            opacity-60"
 
-                      style={{
-                      color: '#ffa2b3',                  
-                           }}
-                    preserveAspectRatio="xMidYMid meet"
-                  />
+            style={{
+            color: '#ffa2b3',                  
+                  }}
+            preserveAspectRatio="xMidYMid meet"
+          />
 
         {/* IMAGEN */}
-        <div className="w-full flex justify-center items-center py-10">
-            <div className="relative w-[70%] sm:w-[60%] md:w-[60%] lg:w-[60%] aspect-[1/1.5] rounded-2xl shadow-lg">
+        <div 
+        className="
+        w-full flex 
+        justify-center
+        transition-transform duration-500 ease-out
+        hover:scale-105" >
+
+        <div 
+        className="
+        w-full max-w-md aspect-[3/4] 
+        rounded-2xl 
+        overflow-hidden
+        shadow-xl">
             
-            {/* IMAGEN PRINCIPAL */}
-            <img
-                src="/gallery/artista/exterior-01.webp"
-                alt="Artista pintando exterior"
-                loading="lazy"
-                className="w-full h-full object-cover
-                rounded-2xl
-                shadow-[0_20px_60px_rgba(0,0,0,0.3)]
-                transition-transform duration-500 ease-out
-                hover:scale-105"
-            />
-                       {/* SVG OVERLAY */}
-                <Orquidea
-                  className="absolute pointer-events-none 
-                      w-[80%] sm:w-[80%] md:w-[70%] lg:w-[70%] h-auto
-                      -left-20 sm:-left-31.5 md:left-75
-                      top-[70%] md:top-[70%]
-                      opacity-80 md:opacity-80"
-
-                      style={{
-                      color: '#f1748b',                  
-                           }}
-                    preserveAspectRatio="xMidYMid meet"
-                    />
-
-
-
-          </div>
-
+          {/* IMAGEN PRINCIPAL */}
+          <Link to="/about">
+          <img
+              src="/gallery/artista/exterior-01.webp"
+              alt="Artista pintando exterior"
+              loading="lazy"
+              className="
+              w-full h-full 
+              object-cover"
+          />
+        </Link>
+          </div>           
         </div>
 
+        {/* SVG OVERLAY */}
+      <Orquidea
+        className="
+        absolute pointer-events-none 
+        w-[60%] sm:w-[60%] md:w-[50%] lg:w-[40%] h-auto
+        -left-10 sm:-left-31.5 md:-left-75
+        top-[40%] sm:top-[50%] md:top-[45%] lg:top-[50%]
+        opacity-80 md:opacity-80"
+
+            style={{
+            color: '#f1748b',                  
+                  }}
+          preserveAspectRatio="xMidYMid meet"
+          />
+
         {/* TEXTO */}
-        <div className="text-center md:text-left z-10">
+        <div className="
+          w-full sm:w-[50%] md:w-[50%] lg:w-[110%]
+          flex flex-col 
+          justify-center
+          z-10">
           
-          <h2 className="font-cocomat text-3xl md:text-4xl font-bold mb-6">
+          <h2 
+          className="
+          font-cocomat font-bold
+          text-studio-green 
+          text-3xl md:text-5xl 
+          mb-6">
             About Me
           </h2>
 
-          <p className="text-sm sm:text-base md:text-lg leading-relaxed">
+          <p 
+          className="
+          font-cocomat
+          text-studio-green/80 
+          text-sm sm:text-base md:text-lg 
+          mb-8
+          leading-relaxed">
             My art is born from emotion, the connection with spaces and the search
             to transmit unique sensations in each work.
-          </p>
-
-          <p className="mt-4 text-sm sm:text-base md:text-lg leading-relaxed">
             I work on customized pieces that transform environments.
           </p>
 
-        </div>
+           {/* BOTÓN */}
+            <Button to="/about" color={buttonColors.green}>
+              View About Me
+            </Button>
 
+        </div>
       </div>
     </section>
   );

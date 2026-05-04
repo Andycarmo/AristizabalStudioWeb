@@ -12,11 +12,11 @@ export default function Home() {
     <div className="min-h-screen bg-white pt-24">
       <Header />
       <Hero />
-      <SectionBar title="Gallery" />
+      <SectionBar title="" />
       <Works />
       <SectionBar title="" />
       <Shop />
-      <SectionBar title="About Me" />
+      <SectionBar title="" />
       <About />
       <Footer />
     </div>

@@ -3,11 +3,36 @@
 @tailwind utilities;
 /* Aquí puedes agregar estilos globales que afecten a toda la app */
 
+/* REGULAR */
 @font-face {
   font-family: 'CocomatPro';
   src: url('/fonts/CocomatPro-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+/* BOLD */
+@font-face {
+  font-family: 'CocomatPro';
+  src: url('/fonts/CocomatPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* BLACK (más pesado que bold) */
+@font-face {
+  font-family: 'CocomatPro';
+  src: url('/fonts/CocomatPro-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* ITALIC */
+@font-face {
+  font-family: 'CocomatPro';
+  src: url('/fonts/CocomatPro-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
 }
 
 .show {

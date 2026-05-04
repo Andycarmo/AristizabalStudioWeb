@@ -13,7 +13,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[80vh] overflow-hidden">
+    <section className="
+    relative h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[80vh] 
+    overflow-hidden">
 
       {/* FONDO PARALLAX */}
      <img
