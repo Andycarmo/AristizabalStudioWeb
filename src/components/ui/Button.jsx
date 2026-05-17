@@ -5,21 +5,28 @@ export const buttonColors = {
     bg: "bg-studio-green",
     text: "text-white",
     border: "border-studio-green",
-    hoverText: "group-hover:text-studio-green",
+    hoverText: "group-hover/button:text-studio-green",
     hoverBg: "bg-white",
   },
   blue: {
     bg: "bg-blue-600",
     text: "text-white",
     border: "border-blue-600",
-    hoverText: "group-hover:text-blue-600",
+    hoverText: "group-hover/button:text-blue-600",
     hoverBg: "bg-white",
   },
   pink: {
     bg: "bg-pink-500",
     text: "text-white",
     border: "border-pink-500",
-    hoverText: "group-hover:text-pink-500",
+    hoverText: "group-hover/button:text-pink-500",
+    hoverBg: "bg-white",
+  },
+    orange: {
+    bg: "bg-[#c55c1e]",
+    text: "text-white",
+    border: "border-[#c55c1e]",
+    hoverText: "group-hover/button:text-[#c55c1e]",
     hoverBg: "bg-white",
   },
 
@@ -28,12 +35,27 @@ export const buttonColors = {
     bg: "bg-white",
     text: "text-pink-600",
     border: "border-studio-pink",
-    hoverText: "group-hover:text-white",
+    hoverText: "group-hover/button:text-white",
     hoverBg: "bg-[#DE5D83]",
   },
 };
 
-export default function Button({ to, children, color = buttonColors.green }) {
+/* TAMAÑOS */
+export const buttonSizes = {
+  xsa: "px-2.5 py-[3px] text-[10px]",
+  xsb: "px-6 py-[4px] text-[13px]",
+  xs: "px-2 py-1 text-[11px]",
+  sm: "px-3 py-1.5 text-sm",
+  md: "px-6 py-3 text-base",
+  lg: "px-8 py-4 text-lg",
+};
+
+export default function Button({
+  to, 
+  children, 
+  color = buttonColors.green,
+  size = "md",
+ }) {
   return (
     <Link to={to}>
       <button
@@ -44,8 +66,11 @@ export default function Button({ to, children, color = buttonColors.green }) {
         rounded-full
         border-2
         transition-colors duration-300
-        group
-        ${color.bg} ${color.text} ${color.border}
+        group/button
+        ${buttonSizes[size]}
+        ${color.bg} 
+        ${color.text} 
+        ${color.border}
         `}
       >
         {/* FONDO ANIMADO */}
@@ -54,7 +79,7 @@ export default function Button({ to, children, color = buttonColors.green }) {
           absolute inset-0
           ${color.hoverBg}
           translate-y-full
-          group-hover:translate-y-0
+          group-hover/button:translate-y-0
           transition-transform duration-300 ease-in-out
           `}
         ></span>

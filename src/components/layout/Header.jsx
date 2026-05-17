@@ -11,11 +11,16 @@ function Header() {
   return (
     <>
           {/* MENU MOBILE */}
-      <div className={`fixed inset-0 bg-studio-green backdrop-blur-md flex flex-col items-center justify-center gap-10 z-[999] transition-all duration-500 ${
-          menuOpen 
-           ? "translate-y-0 opacity-100 pointer-events-auto"
-        : "translate-y-full opacity-0 pointer-events-none"
-        }`}>
+      <div className={`fixed top-[88px] left-0 w-full h-[calc(100vh-88px)]
+        bg-studio-green backdrop-blur-md
+        flex flex-col items-center justify-center gap-10
+        z-40 transition-all duration-500
+        ${
+          menuOpen
+            ? "translate-y-0 opacity-100 pointer-events-auto"
+            : "translate-y-full opacity-0 pointer-events-none"
+        }`}
+        >
 
           {/* NAV MOBILE */}
           <Navbar isMobile onNavigate={() => setMenuOpen(false)} />

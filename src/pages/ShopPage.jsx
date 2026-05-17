@@ -1,4 +1,5 @@
 import Header from "../components/layout/Header";
+import Button, { buttonColors } from "../components/ui/Button.jsx";
 import Footer from "../components/layout/Footer";
 
 const products = [
@@ -15,41 +16,102 @@ const products = [
     price: "200,00€",
     image: "/gallery/obras/flores/bouquet-acuarela.webp",
   },
+  {
+    id: 3,
+    title: "Acuarela",
+    price: "200,00€",
+    image: "/gallery/obras/flores/bouquet-acuarela.webp",
+  },
+  {
+    id: 4,
+    title: "Acuarela",
+    price: "200,00€",
+    image: "/gallery/obras/flores/bouquet-acuarela.webp",
+  },
 ];
 
 export default function Shop() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#e9dfd8] pt-24">
+    <div 
+      className="
+      min-h-screen 
+      flex 
+      flex-col 
+      bg-[#e9dfd8] 
+      pt-24">
 
       <Header />
 
-      <main className="flex-1 px-6 py-12 max-w-7xl mx-auto">
+      <main 
+        className="
+        flex-1 
+        px-10 sm:px-8 md:px-7 lg:px-6
+        py-12 
+        max-w-7xl 
+        mx-auto
+        w-full">
 
-        <h1 className="font-cocomat text-4xl md:text-5xl mb-10 text-center">
+        <h1 
+        className="
+        font-cocomat 
+        text-studio-green
+        text-3xl 
+        md:text-5xl 
+        mb-10 
+        text-center">
           Shop
         </h1>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div 
+          className="
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2  
+          lg:grid-cols-3
+          xl:grid-cols-4
+          gap-4 sm:gap-8
+          sm:gap-8">
 
           {products.map((item) => (
             <div
               key={item.id}
-              className="group cursor-pointer transform transition-all duration-500 hover:scale-105"
+              className="
+              group cursor-pointer 
+              transform transition-all 
+              duration-500 hover:scale-105"
 >
 
               {/* CARD */}
-              <div className="bg-white rounded-xl overflow-hidden shadow-md">
+              <div 
+                className="
+                bg-white 
+                rounded-2xl 
+                border border-black/5
+                shadow-[0_12px_40px_rgba(0,0,0,0.08)]
+                transition-all duration-500
+                hover:-translate-y-2
+                hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
 
                 {/* IMAGEN */}
-                <div className="relative w-full aspect-[3/4] bg-[#f5f2ee] p-4 flex items-center justify-center">
+                <div 
+                className="
+                relative 
+                m-1.5 sm:m-4 
+               aspect-[4/5] sm:aspect-[3/4] 
+                bg-[#f8f5f1]
+                border border-black/10 
+                 shadow-[0_10px_30px_rgba(0,0,0,0.08)]
+                 overflow-hidden">
 
                   <img
                     src={item.image}
                     alt={item.title}
                       className="
-                        absolute inset-0 w-full h-full 
-                        object-cover object-center
+                        absolute 
+                        inset-0 w-full h-full 
+                        object-contain
+                        object-center
                         transition-opacity duration-500
                         group-hover:opacity-0
                       "
@@ -74,41 +136,50 @@ export default function Shop() {
                   <h2 className="text-sm md:text-base">
                     {item.title}
                   </h2>
-                {/* FILA PRECIO + BOTÓN */}
-                  <p className="mt-2 font-bold">
-                    {item.price}
-                  </p>
+                {/* FILA PRECIO + ADD */}
+                  <div className="mt-3 flex items-center justify-between gap-3">
 
-                    {/* BOTÓN SIEMPRE VISIBLE */}
-                  <button className="mt-4 px-5 py-2 border border-studio-green rounded-full hover:bg-studio-green hover:text-white transition">
-                    Buy
-                  </button>
-                </div>
+                    {/* PRECIO */}
+                    <p className="font-bold text-sm md:text-base">
+                      {item.price}
+                    </p>
 
-                <div
-                  className="
-                    absolute inset-0 
-                    flex items-end justify-end
-                    p-4
-                    opacity-0
-                    group-hover:opacity-100
-                    transition-opacity duration-500
-                  "
-                >
-                  <button
-                    onClick={() => window.location.href = "/basket"}
-                    className="
-                      bg-white/90 backdrop-blur-md
-                      text-studio-green
-                      px-4 py-2 rounded-full
-                      flex items-center gap-2
-                      shadow-md
-                      hover:bg-studio-green hover:text-white
-                      transition
-                    "
-                  >
-                    Add to Basket 🛒
-                  </button>
+                    {/* ADD SOLO HOVER */}
+                    <div
+                      className="
+                        opacity-0
+                        translate-x-2
+                        pointer-events-none
+
+                        group-hover:opacity-100
+                        group-hover:translate-x-0
+                        group-hover:pointer-events-auto
+
+                        transition-all duration-300
+                      "
+                    >
+                      <Button
+                        to="/basket"
+                        color={buttonColors.orange}
+                        size="xsb"
+                      >
+                        Add 🛒
+                      </Button>
+                    </div>
+
+                  </div>
+
+                  {/* BUY SIEMPRE VISIBLE */}
+                  <div className="mt-3">
+                    <Button
+                      to="/ShopPage"
+                      color={buttonColors.green}
+                      size="xsb"
+                    >
+                      Buy
+                    </Button>
+                  </div>
+
                 </div>
 
               </div>

@@ -139,7 +139,13 @@ export default function Store() {
 
       <Header />
 
-      <main className="flex-1 px-6 py-12 max-w-7xl mx-auto">
+      <main 
+      className="
+      flex-1 
+      px-6 
+      py-12 
+      max-w-7xl 
+      mx-auto">
 
         {/* TÍTULO 
         <h1 className="font-cocomat text-4xl md:text-5xl mb-8 text-center">
@@ -153,7 +159,7 @@ export default function Store() {
             sticky 
             top-[calc(5rem+12px)] 
             md:top-[calc(6rem+20px)] 
-            z-40 
+            z-30 
             bg-[#e9dfd8]/90 
             backdrop-blur-md 
             border-b border-black/10
@@ -164,49 +170,66 @@ export default function Store() {
          {/* TÍTULO */}
         <h1 
         className={`
-          font-cocomat text-center transition-all duration-500 ease-in-out
+          font-cocomat
+          text-studio-green 
+          text-center 
+          transition-all 
+          duration-500 
+          ease-in-out
           ${scrolled 
-              ? "text-2xl md:text-3xl mb-1 scale-95 opacity-90" 
-              : "text-3xl md:text-4xl mb-4 scale-100"}
+              ? "text-2xl md:text-4xl mb-1 scale-95 opacity-90" 
+              : "text-3xl md:text-5xl mb-4 scale-100"}
         `}
       >
           Colección
         </h1>
 
         {/* BOTONES */}
-          <div 
+        <div
           className={`
-            flex flex-wrap justify-center gap-3 transition-all duration-500
-            ${scrolled ? "gap-2 mb-2" : "gap-3 mb-4"}
+            flex justify-center items-center
+            gap-1 sm:gap-3
+            overflow-x-auto
+            whitespace-nowrap
+            transition-all duration-500
+            ${scrolled ? "mb-2" : "mb-4"}
           `}
->
-            {["all", "flores", "aves", "peces", "otros"].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => {
-                  setFilter(cat);
-                  setVisibleCount(12);
-                }}
-                className={`
-                  rounded-full border transition-all duration-300
-                  ${scrolled ? "text-sm px-3 py-1" : "text-sm px-4 py-2"}
-                  ${
-                    filter === cat
-                      ? "bg-studio-green text-white"
-                      : "border-studio-green hover:bg-studio-green hover:text-white"
-                  }
-                `}
-              >
-                {cat.toUpperCase()}
-              </button>
-            ))}
-          </div>
+        >
+          {["all", "flores", "aves", "peces", "otros"].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setFilter(cat);
+                setVisibleCount(12);
+              }}
+              className={`
+                rounded-full border transition-all duration-300 shrink-0
+
+                px-2 py-[4px] text-[11px]
+                sm:text-sm sm:px-4 sm:py-2
+
+                ${
+                  filter === cat
+                    ? "bg-studio-green text-white"
+                    : "border-studio-green hover:bg-studio-green hover:text-white"
+                }
+              `}
+            >
+              {cat.toUpperCase()}
+            </button>
+          ))}
+        </div>
          </div>
 
         {/* MASONRY */}
         <div 
         key={filter}
-        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 mt-4">
+        className="
+        columns-1 
+        sm:columns-2 
+        md:columns-3 
+        lg:columns-4 
+        gap-6 mt-4">
 
           {visibleItems.map((art) => (
             <div key={art.id} className="break-inside-avoid mb-6">
