@@ -1,26 +1,18 @@
-import { Routes, Route } from "react-router-dom";
-
+import { Route } from "react-router-dom";
 import Login from "../admin/pages/Login";
-
 import Dashboard from "../admin/pages/Dashboard";
-
 import ProtectedRoute from "./ProtectedRoute";
 
+
 export default function AdminRoutes() {
-
   return (
-
-    <Routes>
-
+    <>
       {/* LOGIN */}
-      <Route
-        path="/admin"
-        element={<Login />}
-      />
+      <Route path="/admin" element={<Login />} />
 
-      {/* DASHBOARD PROTEGIDO */}
+      {/* DASHBOARD */}
       <Route
-        path="/studio-dashboard"
+        path="/studio-dashboard/*"
         element={
           <ProtectedRoute>
             <Dashboard />
@@ -28,8 +20,6 @@ export default function AdminRoutes() {
         }
       />
 
-    </Routes>
-
+    </>
   );
-
 }

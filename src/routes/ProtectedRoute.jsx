@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children }) {
   if (!user) {
     return (
       <Navigate
-        to="/studio-dashboard/login"
+        to="/admin"
         replace
       />
     );

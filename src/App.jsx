@@ -1,16 +1,8 @@
 import ScrollToTop from "./components/ui/ScrollToTop";
-import PublicRoutes from "./routes/publicRoutes";
-import AdminRoutes from "./routes/adminRoutes";
+import AppRouter from "./routes/AppRouter";
 
 function App() {
-  return (
-    <>
-      <ScrollToTop />
-      
-      <PublicRoutes />
-      <AdminRoutes />
-    </>
-  );
+  return <AppRouter />;
 }
 
 export default App;
