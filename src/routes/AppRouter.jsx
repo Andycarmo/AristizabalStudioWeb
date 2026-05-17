@@ -1,6 +1,6 @@
 import { Routes } from "react-router-dom";
-import PublicRoutes from "./PublicRoutes";
-import AdminRoutes from "./AdminRoutes";
+import PublicRoutes from "./publicRoutes";
+import AdminRoutes from "./adminRoutes";
 
 export default function AppRouter() {
   return (
