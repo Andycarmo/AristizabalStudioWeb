@@ -14,7 +14,7 @@ export default function AdminRoutes() {
 
       {/* LOGIN */}
       <Route
-        path="/studio-dashboard/login"
+        path="/admin"
         element={<Login />}
       />
 
