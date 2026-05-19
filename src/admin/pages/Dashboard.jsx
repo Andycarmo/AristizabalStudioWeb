@@ -7,7 +7,7 @@ export default function Dashboard() {
   return (
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">
-        Welcome back 👋
+        Hola de nuevo 👋
       </h1>
 
       <Outlet />

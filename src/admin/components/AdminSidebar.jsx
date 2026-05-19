@@ -10,16 +10,19 @@ export default function Sidebar() {
           Dashboard
         </Link>
 
-        <Link className="hover:text-white" to="/studio-dashboard/products">
-          Products
+        <Link
+          to="/studio-dashboard/products"
+          className="text-gray-300 hover:text-white"
+        >
+          Productos para venta
         </Link>
 
         <Link className="hover:text-white" to="/studio-dashboard/orders">
-          Orders
+          Ordenes
         </Link>
 
         <Link className="hover:text-white" to="/studio-dashboard/settings">
-          Settings
+          Configuración
         </Link>
       </nav>
     </aside>

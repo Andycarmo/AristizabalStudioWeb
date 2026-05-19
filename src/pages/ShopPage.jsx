@@ -1,36 +1,26 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Button, { buttonColors } from "../components/ui/Button.jsx";
 import Footer from "../components/layout/Footer";
-
-const products = [
-  {
-    id: 1,
-    title: "Pez Coy Dorado - 13x18 cm.",
-    price: "160,00€",
-    image: "/gallery/obras/peces/fish-01.webp",
-    hoverImage: "/gallery/obras/peces/fish-01-detail.webp",
-  },
-  {
-    id: 2,
-    title: "Acuarela",
-    price: "200,00€",
-    image: "/gallery/obras/flores/bouquet-acuarela.webp",
-  },
-  {
-    id: 3,
-    title: "Acuarela",
-    price: "200,00€",
-    image: "/gallery/obras/flores/bouquet-acuarela.webp",
-  },
-  {
-    id: 4,
-    title: "Acuarela",
-    price: "200,00€",
-    image: "/gallery/obras/flores/bouquet-acuarela.webp",
-  },
-];
+import { getProducts } from "../services/products";
 
 export default function Shop() {
+  const [products, setProducts] = useState([]);
+
+    // ================= LOAD PRODUCTS =================
+  useEffect(() => {
+    async function loadProducts() {
+      const { data, error } = await getProducts();
+      if (error) {
+        console.error(error);
+      } else {
+        setProducts(data);
+      }
+    }
+    loadProducts();
+  }, []);
+
   return (
     <div 
       className="
@@ -70,17 +60,18 @@ export default function Shop() {
           sm:grid-cols-2  
           lg:grid-cols-3
           xl:grid-cols-4
-          gap-4 sm:gap-8
-          sm:gap-8">
+          gap-4 sm:gap-8"
+          >
 
           {products.map((item) => (
+            <Link to={`/obra/${item.slug}`} key={item.id}>
             <div
               key={item.id}
               className="
               group cursor-pointer 
               transform transition-all 
               duration-500 hover:scale-105"
->
+              >
 
               {/* CARD */}
               <div 
@@ -98,50 +89,57 @@ export default function Shop() {
                 className="
                 relative 
                 m-1.5 sm:m-4 
-               aspect-[4/5] sm:aspect-[3/4] 
+                aspect-[4/5] sm:aspect-[3/4] 
                 bg-[#f8f5f1]
                 border border-black/10 
-                 shadow-[0_10px_30px_rgba(0,0,0,0.08)]
-                 overflow-hidden">
+                shadow-[0_10px_30px_rgba(0,0,0,0.08)]
+                overflow-hidden">
 
                   <img
-                    src={item.image}
-                    alt={item.title}
-                      className="
-                        absolute 
-                        inset-0 w-full h-full 
-                        object-contain
-                        object-center
-                        transition-opacity duration-500
-                        group-hover:opacity-0
-                      "
-                    />
+                    src={
+                      item.image_url ||
+                      "https://placehold.co/600x800?text=No+Image"
+                    }
+                    alt={item.name}
+                    className={`
+                      absolute inset-0 w-full h-full
+                      object-cover object-center
+                      transition-opacity duration-500
+                      ${
+                        item.hover_image_url?.trim()
+                          ? "group-hover:opacity-0"
+                          : ""
+                      }
+                    `}
+                  />
 
-                    {/* Imagen hover */}
-                    <img
-                      src={item.hoverImage}
-                      alt={item.title}
-                      className="
-                        absolute inset-0 w-full h-full 
-                        object-cover object-center
-                        opacity-0
-                        transition-opacity duration-500
-                        group-hover:opacity-100
-                      "
-                    />
+                   {/* Imagen hover */}
+                    {item.hover_image_url && (
+                      <img
+                        src={item.hover_image_url}
+                        alt={item.name}
+                        className="
+                          absolute inset-0 w-full h-full
+                          object-cover object-center
+                          opacity-0
+                          transition-opacity duration-500
+                          group-hover:opacity-100
+                        "
+                      />
+                    )}
                 </div>
 
                 {/* INFO */}
                 <div className="p-4">
                   <h2 className="text-sm md:text-base">
-                    {item.title}
+                    {item.name}
                   </h2>
                 {/* FILA PRECIO + ADD */}
                   <div className="mt-3 flex items-center justify-between gap-3">
 
                     {/* PRECIO */}
                     <p className="font-bold text-sm md:text-base">
-                      {item.price}
+                      ${Number(item.price).toLocaleString()}
                     </p>
 
                     {/* ADD SOLO HOVER */}
@@ -172,7 +170,7 @@ export default function Shop() {
                   {/* BUY SIEMPRE VISIBLE */}
                   <div className="mt-3">
                     <Button
-                      to="/ShopPage"
+                      to="/shop"
                       color={buttonColors.green}
                       size="xsb"
                     >
@@ -185,6 +183,7 @@ export default function Shop() {
               </div>
 
             </div>
+          </Link>
           ))}
 
         </div>
