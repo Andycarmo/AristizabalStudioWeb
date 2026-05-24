@@ -3,10 +3,16 @@ import YoutubeIcon from '../../assets/youtube.svg?react';
 import InstagramIcon from '../../assets/instagram.svg?react';
 import TikTokIcon from '../../assets/tik-tok.svg?react';
 import { useState } from "react";
+import { useCart } from "../../context/CartContext";
 import Navbar from "./Navbar";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cart, setIsCartOpen } = useCart();
+  const totalItems = cart.reduce(
+  (total, item) => total + item.quantity,
+  0
+);
 
   return (
     <>
@@ -66,16 +72,94 @@ function Header() {
           </div>
         </div>
 
-        {/* BURGER */}
-        <div className="md:hidden flex items-center z-[60]">
-          <button onClick={() => setMenuOpen(!menuOpen)} className="flex flex-col gap-2">
-            <span className={`w-8 h-[1px] bg-studio-pink ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}`} />
-            <span className={`w-8 h-[1px] bg-studio-pink ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}`} />
-          </button>
-        </div>
+        {/* MOBILE ACTIONS */}
+            <div className="md:hidden flex items-center gap-5 z-[60]">
+
+              {/* CART */}
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="
+                  relative
+                  text-2xl
+                  text-studio-pink
+                "
+              >
+
+                🛒
+
+                {totalItems > 0 && (
+                  <span
+                    className="
+                      absolute
+                      -top-2
+                      -right-3
+
+                      bg-pink-500
+                      text-white
+
+                      text-[10px]
+                      font-bold
+
+                      min-w-[18px]
+                      h-[18px]
+
+                      px-1
+
+                      rounded-full
+
+                      flex
+                      items-center
+                      justify-center
+                    "
+                  >
+                    {totalItems}
+                  </span>
+                )}
+
+              </button>
+
+              {/* BURGER */}
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="flex flex-col gap-2"
+              >
+
+                <span
+                  className={`
+                    w-8
+                    h-[1px]
+                    bg-studio-pink
+                    transition-all
+
+                    ${
+                      menuOpen
+                        ? "rotate-45 translate-y-[5px]"
+                        : ""
+                    }
+                  `}
+                />
+
+                <span
+                  className={`
+                    w-8
+                    h-[1px]
+                    bg-studio-pink
+                    transition-all
+
+                    ${
+                      menuOpen
+                        ? "-rotate-45 -translate-y-[5px]"
+                        : ""
+                    }
+                  `}
+                />
+
+              </button>
+
+            </div>
 
         {/* REDES */}
-        <div className="fade-up-2 hidden md:flex items-center gap-6 z-10">
+        <div className="fade-up-2 hidden md:flex items-center gap-5 z-10">
 
           {/* >>>>>>>>>>>>>   YOUTUBE    <<<<<<<<<<<<<<<*/}
           <a href="https://www.youtube.com/@aristizabalstudio" target="_blank" rel="noopener noreferrer" className="group">
@@ -91,6 +175,51 @@ function Header() {
           <a href="https://www.tiktok.com/@aristizabal.studio" target="_blank" rel="noopener noreferrer" className="group">
             <TikTokIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
           </a>
+
+          {/* CART */}
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="
+              relative
+              text-studio-pink
+              text-2xl
+              hover:scale-110
+              transition
+            "
+          >
+
+            🛒
+
+            {cart.reduce((total, item) => total + item.quantity, 0) > 0 && (
+              <span
+                className="
+                  absolute
+                  -top-2
+                  -right-3
+
+                  bg-pink-500
+                  text-white
+
+                  text-[10px]
+                  font-bold
+
+                  min-w-[18px]
+                  h-[18px]
+
+                  px-1
+
+                  rounded-full
+
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                {cart.reduce((total, item) => total + item.quantity, 0)}
+              </span>
+            )}
+
+          </button>
 
         </div>
 

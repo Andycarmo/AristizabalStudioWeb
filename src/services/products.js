@@ -9,14 +9,16 @@ export const getProducts = () =>
 
 // ================= CREATE PRODUCT =================
 export const createProduct = (product) =>
-  supabase.from("products").insert([product]);
+  supabase
+.from("products")
+.insert([product])
 
 // ================= UPDATE PRODUCT =================
 export const updateProduct = (id, product) =>
   supabase
     .from("products")
     .update(product)
-    .eq("id", id);
+    .eq("id", id)
 
 // ================= DELETE PRODUCT =================
 export const deleteProduct = (id) =>

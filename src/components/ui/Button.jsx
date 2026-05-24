@@ -51,50 +51,75 @@ export const buttonSizes = {
 };
 
 export default function Button({
-  to, 
-  children, 
+  to,
+  children,
   color = buttonColors.green,
   size = "md",
- }) {
-  return (
-    <Link to={to}>
-      <button
-        className={`
-        relative overflow-hidden
+  onClick,
+  className = "",
+}) {
+
+  const buttonContent = (
+    <button
+      onClick={onClick}
+      className={`
+        relative
+        overflow-hidden
         font-cocomat
-        px-6 py-3 
         rounded-full
         border-2
-        transition-colors duration-300
+        transition-colors
+        duration-300
         group/button
+
         ${buttonSizes[size]}
-        ${color.bg} 
-        ${color.text} 
+        ${color.bg}
+        ${color.text}
         ${color.border}
-        `}
-      >
-        {/* FONDO ANIMADO */}
-        <span
-          className={`
-          absolute inset-0
+
+        ${className}
+      `}
+    >
+
+      {/* BACKGROUND */}
+      <span
+        className={`
+          absolute
+          inset-0
           ${color.hoverBg}
           translate-y-full
           group-hover/button:translate-y-0
-          transition-transform duration-300 ease-in-out
-          `}
-        ></span>
+          transition-transform
+          duration-300
+          ease-in-out
+        `}
+      />
 
-        {/* TEXTO */}
-        <span
-          className={`
-          relative z-10
-          transition-colors duration-300
+      {/* TEXT */}
+      <span
+        className={`
+          relative
+          z-10
+          transition-colors
+          duration-300
           ${color.hoverText}
-          `}
-        >
-          {children}
-        </span>
-      </button>
-    </Link>
+        `}
+      >
+        {children}
+      </span>
+
+    </button>
   );
+
+  // LINK BUTTON
+  if (to) {
+    return (
+      <Link to={to}>
+        {buttonContent}
+      </Link>
+    );
+  }
+
+  // NORMAL BUTTON
+  return buttonContent;
 }

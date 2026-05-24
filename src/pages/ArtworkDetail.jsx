@@ -4,12 +4,14 @@ import Header from "../components/layout/Header";
 import Button, { buttonColors } from "../components/ui/Button.jsx";
 import Footer from "../components/layout/Footer";
 import { getProductBySlug } from "../services/products";
+import { useCart } from "../context/CartContext";
 
 export default function ArtworkDetail() {
   const { slug } = useParams();
 
   const [artwork, setArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function loadArtwork() {
@@ -96,11 +98,6 @@ export default function ArtworkDetail() {
                 </p>
 
                 <p>
-                  <span className="text-gray-500">Año:</span>{" "}
-                  {artwork.year}
-                </p>
-
-                <p>
                   <span className="text-gray-500">Estado:</span>{" "}
                   <span className={artwork.available ? "text-green-600" : "text-red-500"}>
                     {artwork.available ? "Disponible" : "No disponible"}
@@ -109,13 +106,28 @@ export default function ArtworkDetail() {
 
               </div>
 
-              {/* BOTÓN */}
-              <Button
-                color={buttonColors.green}
-                size="md"
-              >
-                Contactar por esta obra
-              </Button>
+              {/* ACTION BUTTONS */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+
+                  {/* BUY NOW */}
+                  <Button
+                    color={buttonColors.green}
+                    size="md"
+                    className="flex-1"
+                  >
+                    Buy Now
+                  </Button>
+
+                  {/* ADD TO CART */}
+                  <Button
+                    color={buttonColors.orange}
+                    size="md"
+                    className="flex-1"
+                    onClick={() => addToCart(artwork)}>
+                    Add to Cart 🛒
+                  </Button>
+
+                </div>
 
             </div>
 

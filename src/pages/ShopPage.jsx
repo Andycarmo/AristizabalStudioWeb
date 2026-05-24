@@ -139,7 +139,14 @@ export default function Shop() {
 
                     {/* PRECIO */}
                     <p className="font-bold text-sm md:text-base">
-                      ${Number(item.price).toLocaleString()}
+                      {new Intl.NumberFormat(
+                        item.currency === "COP" ? "es-CO" : "en-US",
+                        {
+                          style: "currency",
+                          currency: item.currency || "COP",
+                          maximumFractionDigits: 0,
+                        }
+                      ).format(item.price)}
                     </p>
 
                     {/* ADD SOLO HOVER */}

@@ -5,6 +5,7 @@ import ShopPage from "../pages/ShopPage";
 import ArtworkDetail from "../pages/ArtworkDetail";
 import AboutPage from "../pages/AboutPage";
 import Contact from "../pages/Contact";
+import CartPage from "../pages/CartPage";
 
 
 export default function PublicRoutes() {
@@ -16,6 +17,8 @@ export default function PublicRoutes() {
       <Route path="/obra/:slug" element={<ArtworkDetail />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/cart" element={<CartPage />}
+/>
     </>
   );
 }

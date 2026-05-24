@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import AdminLayout from "../layouts/AdminLayout";
+import ProductMessages from "../components/ProductMessages";
 import { supabase } from "../../config/supabase";
 import Swal from "sweetalert2";
 
@@ -13,12 +14,14 @@ import {
 export default function Products() {
 
   const [products, setProducts] = useState([]);
+  const [currency, setCurrency] = useState("COP");
   const [imageFile, setImageFile] = useState(null);
   const [hoverImageFile, setHoverImageFile] = useState(null);
   const [technique, setTechnique] = useState("");
   const [form, setForm] = useState({
     name: "",
     price: "",
+    dimensions: "",
     description: "",
   });
 
@@ -36,334 +39,429 @@ const hoverInputRef = useRef(null);
   // ================= LOAD PRODUCTS =================
   async function loadProducts() {
 
-    const { data, error } = await getProducts();
+              const { data, error } = await getProducts();
 
-    if (error) {
-      console.log(error);
-      return;
-    }
+              if (error) {
+                console.log(error);
+                return;
+              }
 
-    setProducts(data || []);
-  }
+              setProducts(data || []);
+            }
 
-  useEffect(() => {
-  loadProducts();
-  }, []);
+            useEffect(() => {
+            loadProducts();
+            }, []);
 
   // ================= HANDLE INPUT =================
   function handleChange(e) {
 
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  }
+            setForm({
+              ...form,
+              [e.target.name]: e.target.value,
+            });
+          }
 
     // ================= CLEAN FORM =================
-    function resetForm() {
+  function resetForm() {
 
-      setForm({
-        name: "",
-        price: "",
-        description: "",
-      });
+            setForm({
+              name: "",
+              price: "",
+              dimensions: "",
+              description: "",
+            });
 
-      setImageFile(null);
-      setHoverImageFile(null);
-      setEditingProduct(null);
-      setTechnique("");
+            setImageFile(null);
+            setHoverImageFile(null);
+            setEditingProduct(null);
+            setTechnique("");
 
-      // CLEAN FILE INPUTS
-      if (imageInputRef.current) {
-        imageInputRef.current.value = "";
-      }
+            // CLEAN FILE INPUTS
+            if (imageInputRef.current) {
+              imageInputRef.current.value = "";
+            }
 
-      if (hoverInputRef.current) {
-        hoverInputRef.current.value = "";
-      }
-    }
+            if (hoverInputRef.current) {
+              hoverInputRef.current.value = "";
+            }
+          }
 
   // ================= CREATE PRODUCT =================
   async function handleCreateProduct() {
+            try {
 
-  try {
+                setLoading(true);
+                setErrorMessage("");
 
-      setLoading(true);
-      setErrorMessage("");
+              let imageUrl = "";
+              let hoverImageUrl = "";
 
-    let imageUrl = "";
-    let hoverImageUrl = "";
+              let fileName = "";
+              let hoverFileName = "";
+              
+              // ================= UPLOAD MAIN IMAGE =================
+              if (imageFile) {
 
-    let fileName = "";
-    let hoverFileName = "";
-    
-    // ================= UPLOAD MAIN IMAGE =================
-    if (imageFile) {
+              fileName = `${Date.now()}-${imageFile.name}`;
 
-    fileName = `${Date.now()}-${imageFile.name}`;
+              const { error: uploadError } = await supabase.storage
+                .from("products")
+                .upload(fileName, imageFile);
 
-    const { error: uploadError } = await supabase.storage
-      .from("products")
-      .upload(fileName, imageFile);
+              if (uploadError) {
+                setErrorMessage(uploadError.message);
+                return;
+              }
 
-    if (uploadError) {
-      setErrorMessage(uploadError.message);
-      return;
-    }
+              const { data } = supabase.storage
+                .from("products")
+                .getPublicUrl(fileName);
 
-    const { data } = supabase.storage
-      .from("products")
-      .getPublicUrl(fileName);
+              imageUrl = data.publicUrl;
+            }
 
-    imageUrl = data.publicUrl;
-  }
+            // ================= UPLOAD HOVER IMAGE =================
+            if (hoverImageFile) {
 
-  // ================= UPLOAD HOVER IMAGE =================
-  if (hoverImageFile) {
+              hoverFileName = `${Date.now()}-${hoverImageFile.name}`;
 
-    hoverFileName = `${Date.now()}-${hoverImageFile.name}`;
+              const { error: hoverUploadError } = await supabase.storage
+                  .from("products")
+                  .upload(hoverFileName, hoverImageFile);
 
-    const { error: hoverUploadError } = await supabase.storage
-        .from("products")
-        .upload(hoverFileName, hoverImageFile);
+              if (hoverUploadError) {
+                setErrorMessage(hoverUploadError.message);
+                return;
+              }
 
-    if (hoverUploadError) {
-      setErrorMessage(hoverUploadError.message);
-      return;
-    }
+              const { data: hoverData } = supabase.storage
+                .from("products")
+                .getPublicUrl(hoverFileName);
 
-    const { data: hoverData } = supabase.storage
-      .from("products")
-      .getPublicUrl(hoverFileName);
+              hoverImageUrl = hoverData.publicUrl;
+            }
 
-    hoverImageUrl = hoverData.publicUrl;
-  }
+              // ================= CREATE PRODUCT =================
+              const { error } = await createProduct({
+                ...form,
+                slug: form.name
+                  .toLowerCase()
+                  .trim()
+                  .replace(/\s+/g, "-"),
+                price: Number(String(form.price).replace(/\./g, "").replace(/,/g, "")),
+                image_url: imageUrl,
+                hover_image_url: hoverImageUrl,
+                technique: technique, // 👈 AQUÍ
+              });
+              console.log(error);
 
-    // ================= CREATE PRODUCT =================
-    const { error } = await createProduct({
-      ...form,
-      price: Number(form.price),
-      image_url: imageUrl,
-      hover_image_url: hoverImageUrl,
-      technique: technique, // 👈 AQUÍ
-    });
-    console.log(error);
+              if (error) {
+                console.log(error);
+                setErrorMessage("Error creating product");
+                setLoading(false);
+                return;
+              }
 
-    if (error) {
-      console.log(error);
-      setErrorMessage("Error creating product");
-      setLoading(false);
-      return;
-    }
+              // ================= SUCCESS =================
+                setSuccessMessage("Product created successfully");
+                setSuccess(true);
 
-    // ================= SUCCESS =================
-      setSuccessMessage("Product created successfully");
-      setSuccess(true);
+                setTimeout(() => {
+                  setSuccess(false);
+                }, 3000);
 
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
+              // ================= RESET =================
+              resetForm();
 
-    // ================= RESET =================
-    resetForm();
+              // ================= RELOAD =================
+              loadProducts();
 
-    // ================= RELOAD =================
-    loadProducts();
+            } catch (err) {
 
-  } catch (err) {
+              console.log(err);
 
-    console.log(err);
+              setErrorMessage("Unexpected error");
 
-    setErrorMessage("Unexpected error");
+            } finally {
 
-  } finally {
-
-    setLoading(false);
-  }
-}
+              setLoading(false);
+            }
+          }
 
   // ================= EDIT CLICK =================
-    function handleEditClick(product) {
+  function handleEditClick(product) {
 
-      setEditingProduct(product);
+            setEditingProduct(product);
 
-      setForm({
-        name: product.name || "",
-        price: product.price || "",
-        description: product.description || "",
-      
-      });
-      setTechnique(product.technique || "");
-    }
+            setForm({
+              name: product.name || "",
+              price: product.price || "",
+              dimensions: product.dimensions || "",
+              description: product.description || "",
+            
+            });
+            setTechnique(product.technique || "");
+          }
 
-    // ================= UPDATE PRODUCT =================
-    async function handleUpdateProduct() {
+  // ================= REMOVE CURRENT IMAGE =================
+  async function handleRemoveCurrentImage() {
 
-      try {
+            try {
 
-        setLoading(true);
-        setErrorMessage("");
+              // DELETE FROM STORAGE
+              if (editingProduct.image_url) {
 
-        let imageUrl = editingProduct.image_url;
-        let hoverImageUrl = editingProduct.hover_image_url;
+                const oldImagePath =
+                  getStoragePath(editingProduct.image_url);
 
-    // ================= NEW IMAGE =================
-    if (imageFile) {
+                await supabase.storage
+                  .from("products")
+                  .remove([oldImagePath]);
+              }
 
-                // DELETE OLD IMAGE
-        if (editingProduct.image_url) {
+              // UPDATE DATABASE
+              const { error } = await updateProduct(
+                editingProduct.id,
+                {
+                  image_url: null,
+                }
+              );
 
-          const oldImagePath =
-            getStoragePath(editingProduct.image_url);
+              if (error) {
+                console.log(error);
+                return;
+              }
 
-          await supabase.storage
-            .from("products")
-            .remove([oldImagePath]);
+              // UPDATE UI
+              setEditingProduct({
+                ...editingProduct,
+                image_url: null,
+              });
+
+            } catch (error) {
+
+              console.log(error);
+
+            }
+          }
+
+  // ================= REMOVE CURRENT HOVER IMAGE =================
+    async function handleRemoveCurrentHoverImage() {
+
+              try {
+
+                // DELETE FROM STORAGE
+                if (editingProduct.hover_image_url) {
+
+                  const oldHoverPath =
+                    getStoragePath(
+                      editingProduct.hover_image_url
+                    );
+
+                  await supabase.storage
+                    .from("products")
+                    .remove([oldHoverPath]);
+                }
+
+                // UPDATE DATABASE
+                const { error } = await updateProduct(
+                  editingProduct.id,
+                  {
+                    hover_image_url: null,
+                  }
+                );
+
+                if (error) {
+                  console.log(error);
+                  return;
+                }
+
+                // UPDATE UI
+                setEditingProduct({
+                  ...editingProduct,
+                  hover_image_url: null,
+                });
+
+              } catch (error) {
+
+                console.log(error);
+
+              }
+            }
+
+  // ================= UPDATE PRODUCT =================
+  async function handleUpdateProduct() {
+
+            try {
+
+              setLoading(true);
+              setErrorMessage("");
+
+              let imageUrl = editingProduct.image_url;
+              let hoverImageUrl = editingProduct.hover_image_url;
+
+          // ================= NEW IMAGE =================
+          if (imageFile) {
+
+                      // DELETE OLD IMAGE
+              if (editingProduct.image_url) {
+
+                const oldImagePath =
+                  getStoragePath(editingProduct.image_url);
+
+                await supabase.storage
+                  .from("products")
+                  .remove([oldImagePath]);
+              }
+
+            const fileName = `${Date.now()}-${imageFile.name}`;
+
+            const { error: uploadError } = await supabase.storage
+              .from("products")
+              .upload(fileName, imageFile);
+
+            if (uploadError) {
+              setErrorMessage(uploadError.message);
+              return;
+            }
+
+            const { data } = supabase.storage
+              .from("products")
+              .getPublicUrl(fileName);
+
+            imageUrl = data.publicUrl;
+          }
+
+          // ================= NEW HOVER IMAGE =================
+          if (hoverImageFile) {
+
+            // DELETE OLD HOVER IMAGE
+          if (editingProduct.hover_image_url) {
+
+            const oldHoverPath =
+              getStoragePath(editingProduct.hover_image_url);
+
+            await supabase.storage
+              .from("products")
+              .remove([oldHoverPath]);
+          }
+
+            const hoverFileName =
+              `${Date.now()}-${hoverImageFile.name}`;
+
+            const { error: hoverUploadError } =
+              await supabase.storage
+                .from("products")
+                .upload(hoverFileName, hoverImageFile);
+
+            if (hoverUploadError) {
+              setErrorMessage(hoverUploadError.message);
+              return;
+            }
+
+            const { data: hoverData } =
+              supabase.storage
+                .from("products")
+                .getPublicUrl(hoverFileName);
+
+            hoverImageUrl = hoverData.publicUrl;
+          }
+
+          // ================= UPDATE DB =================
+          const { error } = await updateProduct(
+          editingProduct.id,
+          {
+            ...form,
+            slug: form.name
+              .toLowerCase()
+              .trim()
+              .replace(/\s+/g, "-"),
+            price: Number(String(form.price).replace(/\./g, "").replace(/,/g, "")),
+            image_url: imageUrl,
+            hover_image_url: hoverImageUrl,
+            technique: technique,
+          }
+        );
+
+          if (error) {
+            setErrorMessage(error.message);
+            return;
+          }
+
+          // ================= RESET =================
+            resetForm();
+
+            setSuccessMessage("Product updated successfully");
+            setSuccess(true);
+
+            setTimeout(() => {
+              setSuccess(false);
+            }, 3000);
+
+            loadProducts();
+
+          } catch (err) {
+
+            console.log("FULL ERROR:", err);
+            setErrorMessage(err.message || JSON.stringify(err));
+          } finally {
+
+            setLoading(false);
+          }
         }
 
-      const fileName = `${Date.now()}-${imageFile.name}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("products")
-        .upload(fileName, imageFile);
-
-      if (uploadError) {
-        setErrorMessage(uploadError.message);
-        return;
-      }
-
-      const { data } = supabase.storage
-        .from("products")
-        .getPublicUrl(fileName);
-
-      imageUrl = data.publicUrl;
-    }
-
-    // ================= NEW HOVER IMAGE =================
-    if (hoverImageFile) {
-
-       // DELETE OLD HOVER IMAGE
-    if (editingProduct.hover_image_url) {
-
-      const oldHoverPath =
-        getStoragePath(editingProduct.hover_image_url);
-
-      await supabase.storage
-        .from("products")
-        .remove([oldHoverPath]);
-    }
-
-      const hoverFileName =
-        `${Date.now()}-${hoverImageFile.name}`;
-
-      const { error: hoverUploadError } =
-        await supabase.storage
-          .from("products")
-          .upload(hoverFileName, hoverImageFile);
-
-      if (hoverUploadError) {
-        setErrorMessage(hoverUploadError.message);
-        return;
-      }
-
-      const { data: hoverData } =
-        supabase.storage
-          .from("products")
-          .getPublicUrl(hoverFileName);
-
-      hoverImageUrl = hoverData.publicUrl;
-    }
-
-    // ================= UPDATE DB =================
-    const { error } = await updateProduct(
-    editingProduct.id,
-    {
-      ...form,
-      price: Number(form.price),
-      image_url: imageUrl,
-      hover_image_url: hoverImageUrl,
-      technique: technique,
-    }
-  );
-
-    if (error) {
-      setErrorMessage(error.message);
-      return;
-    }
-
-    // ================= RESET =================
-      resetForm();
-
-      setSuccessMessage("Product updated successfully");
-      setSuccess(true);
-
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
-
-      loadProducts();
-
-    } catch (err) {
-
-      console.log("FULL ERROR:", err);
-      setErrorMessage(err.message || JSON.stringify(err));
-    } finally {
-
-      setLoading(false);
-    }
-  }
-
   // ================= CONFIRM DELETE =================
-    async function confirmDelete(product) {
+  async function confirmDelete(product) {
 
-      const result = await Swal.fire({
-        title: "Delete Product?",
-        text: `"${product.name}" will be permanently deleted.`,
-        icon: "warning",
+            const result = await Swal.fire({
+              title: "Delete Product?",
+              text: `"${product.name}" will be permanently deleted.`,
+              icon: "warning",
 
-        background: "#1f2937",
-        color: "#fff",
+              background: "#1f2937",
+              color: "#fff",
 
-        showCancelButton: true,
+              showCancelButton: true,
 
-        confirmButtonColor: "#dc2626",
-        cancelButtonColor: "#374151",
+              confirmButtonColor: "#dc2626",
+              cancelButtonColor: "#374151",
 
-        confirmButtonText: "Yes, delete it",
-        cancelButtonText: "Cancel",
+              confirmButtonText: "Yes, delete it",
+              cancelButtonText: "Cancel",
 
-      });
+            });
 
-      if (result.isConfirmed) {
+            if (result.isConfirmed) {
 
-        await handleDeleteProduct(product);
+              await handleDeleteProduct(product);
 
-        Swal.fire({
-          title: "Deleted!",
-          text: "Product removed successfully.",
-          icon: "success",
+              Swal.fire({
+                title: "Deleted!",
+                text: "Product removed successfully.",
+                icon: "success",
 
-          background: "#1f2937",
-          color: "#fff",
+                background: "#1f2937",
+                color: "#fff",
 
-          confirmButtonColor: "#2563eb",
-        });
-      }
-    }
+                confirmButtonColor: "#2563eb",
+              });
+            }
+          }
 
     // ================= GET STORAGE PATH =================
   function getStoragePath(url) {
 
-    if (!url) return "";
+            if (!url) return "";
 
-    const parts =
-      url.split("/storage/v1/object/public/products/");
+            const parts =
+              url.split("/storage/v1/object/public/products/");
 
-    // DECODE URL
-    return decodeURIComponent(parts[1]);
-  }
-    // ================= DELETE PRODUCT =================
-      async function handleDeleteProduct(product) {
+            // DECODE URL
+            return decodeURIComponent(parts[1]);
+          }
+  // ================= DELETE PRODUCT =================
+  async function handleDeleteProduct(product) {
 
         try {
 
@@ -424,6 +522,31 @@ const hoverInputRef = useRef(null);
         }
       }
 
+  // ================= FORMAT PRICE =================
+  function formatPrice(value, currency) {
+
+            const numbers = value.replace(/\D/g, "");
+
+            if (!numbers) return "";
+
+            return new Intl.NumberFormat(
+              currency === "COP" ? "es-CO" : "en-US"
+            ).format(numbers);
+          }
+
+  // ================= HANDLE PRICE CHANGE =================
+  function handlePriceChange(e) {
+
+              const rawValue = e.target.value;
+
+              const formattedValue =
+                formatPrice(rawValue, currency);
+
+              setForm({
+                ...form,
+                price: formattedValue,
+              });
+            }
   return (
     <AdminLayout>
 
@@ -461,38 +584,273 @@ const hoverInputRef = useRef(null);
             className="bg-gray-900 p-3 rounded-xl outline-none"
           />
 
-          {/* PRICE */}
-          <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={form.price}
-            onChange={handleChange}
-            className="bg-gray-900 p-3 rounded-xl outline-none"
-          />
+           {/* PRICE */}
+            <div className="flex items-center gap-3">
 
-          {/* IMAGE FILE */}
-          <input
-            ref={imageInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
-            className="
-            bg-gray-900 
-            p-3 
-            rounded-xl 
-            outline-none 
-            md:col-span-2"
-          />
+              {/* CURRENCY SELECT */}
+              <div className="relative">
 
-          {/* HOVER IMAGE FILE */}
-          <input
-            ref={hoverInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => setHoverImageFile(e.target.files[0])}
-            className="bg-gray-900 p-3 rounded-xl outline-none md:col-span-2"
-          />
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="
+                    appearance-none
+                    bg-gray-900
+                    border
+                    border-gray-700
+                    rounded-xl
+                    px-4
+                    py-3
+                    pr-10
+                    outline-none
+                    focus:border-blue-500
+                    cursor-pointer
+                  "
+                >
+                  <option value="COP">COP</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                </select>
+
+                {/* TRIANGLE */}
+                <span
+                  className="
+                    absolute
+                    right-3
+                    top-1/2
+                    -translate-y-1/2
+                    text-gray-400
+                    pointer-events-none
+                  "
+                >
+                  ▼
+                </span>
+              </div>
+              {/* PRICE INPUT */}
+              <input
+                type="text"
+                name="price"
+                placeholder={
+                  currency === "COP"
+                    ? "000"
+                    : "000"
+                }
+                value={form.price}
+                onChange={handlePriceChange}
+                className="
+                  flex-1
+                  bg-gray-900
+                  border
+                  border-gray-700
+                  rounded-xl
+                  p-3
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+            </div>
+
+           {/* DIMENSIONS */}
+              <div className="relative">
+
+                <input
+                  type="text"
+                  name="dimensions"
+                  placeholder="(example: 80 x 120)"
+                  value={form.dimensions}
+                  onChange={handleChange}
+                  className="
+                    w-full
+                    bg-gray-900
+                    p-3
+                    pr-14
+                    rounded-xl
+                    outline-none
+                    border
+                    border-gray-700
+                    focus:border-blue-500
+                  "
+                />
+
+                {/* UNIT */}
+                <span
+                  className="
+                    absolute
+                    right-4
+                    top-1/2
+                    -translate-y-1/2
+                    text-gray-400
+                    pointer-events-none
+                    text-sm
+                  "
+                >
+                  cm
+                </span>
+
+              </div>
+          {/* IMAGES */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* MAIN IMAGE */}
+            <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
+
+              <h3 className="text-lg font-semibold mb-1">
+                Main Image
+              </h3>
+
+              <p className="text-sm text-gray-400 mb-4">
+                Visible by default in the gallery
+              </p>
+
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files[0])}
+                className="
+                  w-full
+                  bg-gray-800
+                  p-3
+                  rounded-xl
+                  outline-none
+                "
+              />
+
+              {/* PREVIEW */}
+            {(imageFile || editingProduct?.image_url) && (
+              <img
+                src={
+                  imageFile
+                    ? URL.createObjectURL(imageFile)
+                    : editingProduct.image_url
+                }
+                alt="Preview"
+                className="
+                  mt-4
+                  w-full
+                  h-52
+                  object-contain
+                  bg-gray-800
+                  border border-gray-700
+                  rounded-xl
+                  p-2
+                  border border-gray-700
+                "
+                />
+              )}
+
+                    {/* REMOVE CURRENT IMAGE */}
+                    {editingProduct?.image_url && !imageFile && (
+
+                      <button
+                        type="button"
+                        onClick={handleRemoveCurrentImage}
+                        className="
+                          mt-4
+                          w-full
+
+                          border
+                          border-red-500
+
+                          text-red-400
+
+                          py-3
+                          rounded-xl
+
+                          hover:bg-red-500
+                          hover:text-white
+
+                          transition
+                        "
+                      >
+                        Remove Current Image
+                      </button>
+
+                    )}
+
+            </div>
+
+            {/* HOVER IMAGE */}
+            <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
+
+              <h3 className="text-lg font-semibold mb-1">
+                Hover Image
+              </h3>
+
+              <p className="text-sm text-gray-400 mb-4">
+                Appears when hovering the artwork
+              </p>
+
+              <input
+                ref={hoverInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setHoverImageFile(e.target.files[0])}
+                className="
+                  w-full
+                  bg-gray-800
+                  p-3
+                  rounded-xl
+                  outline-none
+                "
+              />
+
+              {/* PREVIEW */}
+            {(hoverImageFile || editingProduct?.hover_image_url) && (
+              <img
+                src={
+                  hoverImageFile
+                    ? URL.createObjectURL(hoverImageFile)
+                    : editingProduct.hover_image_url
+                }
+                alt="Hover Preview"
+                className="
+                  mt-4
+                  w-full
+                  h-52
+                  object-contain
+                  bg-gray-800
+                  border border-gray-700
+                  rounded-xl
+                  p-2
+                "
+                />
+              )}
+
+                {/* REMOVE CURRENT HOVER IMAGE */}
+                {editingProduct?.hover_image_url &&
+                  !hoverImageFile && (
+
+                  <button
+                    type="button"
+                    onClick={handleRemoveCurrentHoverImage}
+                    className="
+                      mt-4
+                      w-full
+
+                      border
+                      border-red-500
+
+                      text-red-400
+
+                      py-3
+                      rounded-xl
+
+                      hover:bg-red-500
+                      hover:text-white
+
+                      transition
+                    "
+                  >
+                    Remove Hover Image
+                  </button>
+
+                )}
+
+            </div>
+
+          </div>
 
           {/* TECHNIQUE */}
           <div className="flex flex-col gap-1">
@@ -611,7 +969,13 @@ const hoverInputRef = useRef(null);
 
       </div>
 
-      {/* SUCCESS MESSAGE */}
+      <ProductMessages
+        success={success}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
+
+      {/* SUCCESS MESSAGE 
       {success && (
         <div
           className="
@@ -632,7 +996,7 @@ const hoverInputRef = useRef(null);
         </div>
       )}
 
-      {/* ERROR MESSAGE */}
+      {/* ERROR MESSAGE 
       {errorMessage && (
         <div
           className="
@@ -646,7 +1010,7 @@ const hoverInputRef = useRef(null);
         >
           ❌ {errorMessage}
         </div>
-      )}
+      )}*/}
 
     </AdminLayout>
   );
