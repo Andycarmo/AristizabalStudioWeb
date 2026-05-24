@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 import ProductMessages from "../components/ProductMessages";
+import ProductForm from "../components/ProductForm";
+import ProductList from "../components/ProductList";
 import { supabase } from "../../config/supabase";
 import Swal from "sweetalert2";
 
@@ -190,19 +192,44 @@ const hoverInputRef = useRef(null);
           }
 
   // ================= EDIT CLICK =================
-  function handleEditClick(product) {
+      function handleEditClick(product) {
 
-            setEditingProduct(product);
+                  setEditingProduct(product);
 
-            setForm({
-              name: product.name || "",
-              price: product.price || "",
-              dimensions: product.dimensions || "",
-              description: product.description || "",
-            
-            });
-            setTechnique(product.technique || "");
-          }
+                  setForm({
+                    name: product.name || "",
+                    price: product.price || "",
+                    dimensions: product.dimensions || "",
+                    description: product.description || "",
+                  });
+
+                  setTechnique(product.technique || "");
+
+                  // 🔥 SCROLL TO TOP
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                }
+
+  // ================= CANCEL EDIT CLICK =================
+    function handleCancelEdit() {
+
+                  // EXIT EDIT MODE
+                  setEditingProduct(null);
+
+                  // RESET FORM
+                  resetForm();
+
+                  // SUCCESS MESSAGE
+                  setSuccessMessage("Edit cancelled");
+
+                  setSuccess(true);
+
+                  setTimeout(() => {
+                    setSuccess(false);
+                  }, 3000);
+                }
 
   // ================= REMOVE CURRENT IMAGE =================
   async function handleRemoveCurrentImage() {
@@ -565,452 +592,51 @@ const hoverInputRef = useRef(null);
 
       </div>
 
-      {/* CREATE FORM */}
-      <div className="bg-gray-800 p-6 rounded-2xl mb-8">
+      <ProductForm
+        form={form}
+        handleChange={handleChange}
+        handlePriceChange={handlePriceChange}
 
-        <h2 className="text-xl font-semibold mb-6">
-          Create Product
-        </h2>
+        currency={currency}
+        setCurrency={setCurrency}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        imageInputRef={imageInputRef}
+        hoverInputRef={hoverInputRef}
 
-          {/* NAME */}
-          <input
-            type="text"
-            name="name"
-            placeholder="Product Name"
-            value={form.name}
-            onChange={handleChange}
-            className="bg-gray-900 p-3 rounded-xl outline-none"
-          />
+        setImageFile={setImageFile}
+        setHoverImageFile={setHoverImageFile}
 
-           {/* PRICE */}
-            <div className="flex items-center gap-3">
+        imageFile={imageFile}
+        hoverImageFile={hoverImageFile}
 
-              {/* CURRENCY SELECT */}
-              <div className="relative">
+        editingProduct={editingProduct}
+        handleCancelEdit={handleCancelEdit}
 
-                <select
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="
-                    appearance-none
-                    bg-gray-900
-                    border
-                    border-gray-700
-                    rounded-xl
-                    px-4
-                    py-3
-                    pr-10
-                    outline-none
-                    focus:border-blue-500
-                    cursor-pointer
-                  "
-                >
-                  <option value="COP">COP</option>
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                </select>
+        handleRemoveCurrentImage={handleRemoveCurrentImage}
+        handleRemoveCurrentHoverImage={handleRemoveCurrentHoverImage}
 
-                {/* TRIANGLE */}
-                <span
-                  className="
-                    absolute
-                    right-3
-                    top-1/2
-                    -translate-y-1/2
-                    text-gray-400
-                    pointer-events-none
-                  "
-                >
-                  ▼
-                </span>
-              </div>
-              {/* PRICE INPUT */}
-              <input
-                type="text"
-                name="price"
-                placeholder={
-                  currency === "COP"
-                    ? "000"
-                    : "000"
-                }
-                value={form.price}
-                onChange={handlePriceChange}
-                className="
-                  flex-1
-                  bg-gray-900
-                  border
-                  border-gray-700
-                  rounded-xl
-                  p-3
-                  outline-none
-                  focus:border-blue-500
-                "
-              />
+        editingProduct={editingProduct}
+        
+        technique={technique}
+        setTechnique={setTechnique}
 
-            </div>
+        loading={loading}
 
-           {/* DIMENSIONS */}
-              <div className="relative">
+        handleCreateProduct={handleCreateProduct}
+        handleUpdateProduct={handleUpdateProduct}
+      />
 
-                <input
-                  type="text"
-                  name="dimensions"
-                  placeholder="(example: 80 x 120)"
-                  value={form.dimensions}
-                  onChange={handleChange}
-                  className="
-                    w-full
-                    bg-gray-900
-                    p-3
-                    pr-14
-                    rounded-xl
-                    outline-none
-                    border
-                    border-gray-700
-                    focus:border-blue-500
-                  "
-                />
-
-                {/* UNIT */}
-                <span
-                  className="
-                    absolute
-                    right-4
-                    top-1/2
-                    -translate-y-1/2
-                    text-gray-400
-                    pointer-events-none
-                    text-sm
-                  "
-                >
-                  cm
-                </span>
-
-              </div>
-          {/* IMAGES */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {/* MAIN IMAGE */}
-            <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
-
-              <h3 className="text-lg font-semibold mb-1">
-                Main Image
-              </h3>
-
-              <p className="text-sm text-gray-400 mb-4">
-                Visible by default in the gallery
-              </p>
-
-              <input
-                ref={imageInputRef}
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files[0])}
-                className="
-                  w-full
-                  bg-gray-800
-                  p-3
-                  rounded-xl
-                  outline-none
-                "
-              />
-
-              {/* PREVIEW */}
-            {(imageFile || editingProduct?.image_url) && (
-              <img
-                src={
-                  imageFile
-                    ? URL.createObjectURL(imageFile)
-                    : editingProduct.image_url
-                }
-                alt="Preview"
-                className="
-                  mt-4
-                  w-full
-                  h-52
-                  object-contain
-                  bg-gray-800
-                  border border-gray-700
-                  rounded-xl
-                  p-2
-                  border border-gray-700
-                "
-                />
-              )}
-
-                    {/* REMOVE CURRENT IMAGE */}
-                    {editingProduct?.image_url && !imageFile && (
-
-                      <button
-                        type="button"
-                        onClick={handleRemoveCurrentImage}
-                        className="
-                          mt-4
-                          w-full
-
-                          border
-                          border-red-500
-
-                          text-red-400
-
-                          py-3
-                          rounded-xl
-
-                          hover:bg-red-500
-                          hover:text-white
-
-                          transition
-                        "
-                      >
-                        Remove Current Image
-                      </button>
-
-                    )}
-
-            </div>
-
-            {/* HOVER IMAGE */}
-            <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
-
-              <h3 className="text-lg font-semibold mb-1">
-                Hover Image
-              </h3>
-
-              <p className="text-sm text-gray-400 mb-4">
-                Appears when hovering the artwork
-              </p>
-
-              <input
-                ref={hoverInputRef}
-                type="file"
-                accept="image/*"
-                onChange={(e) => setHoverImageFile(e.target.files[0])}
-                className="
-                  w-full
-                  bg-gray-800
-                  p-3
-                  rounded-xl
-                  outline-none
-                "
-              />
-
-              {/* PREVIEW */}
-            {(hoverImageFile || editingProduct?.hover_image_url) && (
-              <img
-                src={
-                  hoverImageFile
-                    ? URL.createObjectURL(hoverImageFile)
-                    : editingProduct.hover_image_url
-                }
-                alt="Hover Preview"
-                className="
-                  mt-4
-                  w-full
-                  h-52
-                  object-contain
-                  bg-gray-800
-                  border border-gray-700
-                  rounded-xl
-                  p-2
-                "
-                />
-              )}
-
-                {/* REMOVE CURRENT HOVER IMAGE */}
-                {editingProduct?.hover_image_url &&
-                  !hoverImageFile && (
-
-                  <button
-                    type="button"
-                    onClick={handleRemoveCurrentHoverImage}
-                    className="
-                      mt-4
-                      w-full
-
-                      border
-                      border-red-500
-
-                      text-red-400
-
-                      py-3
-                      rounded-xl
-
-                      hover:bg-red-500
-                      hover:text-white
-
-                      transition
-                    "
-                  >
-                    Remove Hover Image
-                  </button>
-
-                )}
-
-            </div>
-
-          </div>
-
-          {/* TECHNIQUE */}
-          <div className="flex flex-col gap-1">
-            <label>Técnica</label>
-            <select
-                value={technique}
-                onChange={(e) => setTechnique(e.target.value)}
-                className="bg-gray-900 p-3 rounded-xl"
-              >
-                <option value="">Select technique</option>
-                <option value="Oil Painting">Oil Painting</option>
-                <option value="Acrylic">Acrylic</option>
-                <option value="Watercolor">Watercolor</option>
-                <option value="Mixed Media">Mixed Media</option>
-                <option value="Digital">Digital</option>
-              </select>
-          </div>
-
-          {/* DESCRIPTION */}
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            rows="4"
-            className="bg-gray-900 p-3 rounded-xl outline-none md:col-span-2"
-          />
-
-        </div>
-
-        {/* BUTTON */}
-        <button
-          onClick={
-            editingProduct
-              ? handleUpdateProduct
-              : handleCreateProduct
-          }
-          disabled={loading}
-          className="
-          mt-6 
-          bg-blue-600 
-          hover:bg-blue-700 
-          px-6 py-3 
-          rounded-xl
-          disabled:opacity-50"
-        >
-          {loading
-            ? "Saving..."
-            : editingProduct
-              ? "Update Product"
-              : "Create Product"}
-        </button>
-
-      </div>
-
-      {/* PRODUCTS LIST */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-        {products.map((product) => (
-
-          <div
-            key={product.id}
-            className="bg-gray-800 rounded-2xl overflow-hidden"
-          >
-
-            {/* IMAGE */}
-            <img
-              src={
-                product.image_url ||
-                "https://placehold.co/600x400?text=No+Image"
-              }
-              alt={product.name}
-              className="w-full h-60 object-cover"
-            />
-
-            {/* CONTENT */}
-            <div className="p-5">
-
-              <h2 className="text-xl font-semibold">
-                {product.name}
-              </h2>
-
-              <p className="text-gray-400 mt-2 line-clamp-3">
-                {product.description}
-              </p>
-
-              <p className="mt-4 text-lg font-bold">
-                ${product.price}
-              </p>
-
-              <div className="flex gap-4 mt-5">
-
-                {/* EDIT */}
-                <button
-                  onClick={() => handleEditClick(product)}
-                  className="text-blue-400 hover:text-blue-300"
-                >
-                  Edit
-                </button>
-
-                {/* DELETE */}
-                <button
-                  onClick={() => confirmDelete(product)}
-                  className="text-red-400 hover:text-red-300"
-                >
-                  Delete
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
+      <ProductList
+        products={products}
+        handleEditClick={handleEditClick}
+        confirmDelete={confirmDelete}
+      />
 
       <ProductMessages
         success={success}
         successMessage={successMessage}
         errorMessage={errorMessage}
       />
-
-      {/* SUCCESS MESSAGE 
-      {success && (
-        <div
-          className="
-          fixed
-          top-6
-          right-6
-          z-50
-          bg-green-500/20
-          border border-green-500
-          text-green-300
-          px-4 py-3
-          rounded-xl
-          backdrop-blur-md
-          shadow-xl
-          "
-        >
-          ✅ {successMessage}
-        </div>
-      )}
-
-      {/* ERROR MESSAGE 
-      {errorMessage && (
-        <div
-          className="
-          mb-6
-          bg-red-500/20
-          border border-red-500
-          text-red-300
-          px-4 py-3
-          rounded-xl
-          "
-        >
-          ❌ {errorMessage}
-        </div>
-      )}*/}
 
     </AdminLayout>
   );
