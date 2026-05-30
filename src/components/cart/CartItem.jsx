@@ -14,7 +14,7 @@ export default function CartItem({ item }) {
 
       {/* IMAGE */}
       <img
-        src={item.image_url}
+        src={item.image}
         alt={item.name}
         className="
           w-24

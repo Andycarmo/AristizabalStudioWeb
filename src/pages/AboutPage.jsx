@@ -21,7 +21,8 @@ export default function AboutPage() {
 
           {/* TEXTO */}
           <div className="fade-up-1">
-            <h2 className="font-cocomat text-3xl md:text-4xl mb-6">
+            <h2 className="
+            font-cocomat text-3xl md:text-4xl mb-6">
               About the Studio
             </h2>
             <p className="leading-relaxed opacity-80">
@@ -37,7 +38,6 @@ export default function AboutPage() {
               src="/gallery/artista/floor-02.webp"
               alt="studio"
               loading="eager"
-              fetchPriority="high"
               decoding="async"
               className="w-full max-w-md mx-auto h-auto rounded-2xl shadow-lg object-cover"
             />

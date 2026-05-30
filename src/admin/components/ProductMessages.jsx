@@ -2,9 +2,11 @@ export default function ProductMessages({
   success,
   successMessage,
   errorMessage,
+  messageRef,
+
 }) {
   return (
-    <>
+    <div ref={messageRef} className="space-y-4" >
       {/* SUCCESS */}
       {success && (
         <div
@@ -41,6 +43,6 @@ export default function ProductMessages({
           ❌ {errorMessage}
         </div>
       )}
-    </>
+    </div>
   );
 }

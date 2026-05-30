@@ -1,23 +1,38 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import Header from "../components/layout/Header";
-import Button, { buttonColors } from "../components/ui/Button.jsx";
 import Footer from "../components/layout/Footer";
+
+import Button, { buttonColors } from "../components/ui/Button.jsx";
+
 import { getProductBySlug } from "../services/products";
 import { useCart } from "../context/CartContext";
 
 export default function ArtworkDetail() {
-  const { slug } = useParams();
 
+  const { slug } = useParams();
+  const [selectedImage, setSelectedImage] = useState(null);
   const [artwork, setArtwork] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  // ================= LOAD ARTWORK =================
   useEffect(() => {
     async function loadArtwork() {
       try {
         const data = await getProductBySlug(slug);
         setArtwork(data);
+        
+        // MAIN IMAGE
+         const mainImage =
+          data.images?.find(
+            (img) => img.role === "main"
+          )?.url || "";
+
+        setSelectedImage(mainImage);
+
       } catch (error) {
         console.error("Error cargando obra:", error);
         setArtwork(null);
@@ -29,7 +44,7 @@ export default function ArtworkDetail() {
     loadArtwork();
   }, [slug]);
 
-  console.log("SLUG URL:", slug);
+  // ================= LOADING =================
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -37,7 +52,7 @@ export default function ArtworkDetail() {
       </div>
     );
   }
-
+// ================= NOT FOUND =================
   if (!artwork) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -45,6 +60,16 @@ export default function ArtworkDetail() {
       </div>
     );
   }
+
+  // ================= ALL IMAGES =================
+  const images =
+    artwork.images?.map((img) => img.url) || [];
+
+  // ================= MAIN IMAGE =================
+  const mainImage =
+    artwork.images?.find(
+      (img) => img.role === "main"
+    )?.url || "";
 
    return (
     <div className="min-h-screen flex flex-col bg-[#e9dfd8] pt-24">
@@ -54,27 +79,59 @@ export default function ArtworkDetail() {
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full">
 
-        {loading && (
-          <div className="text-center">Cargando obra...</div>
-        )}
+      <div className="grid md:grid-cols-2 gap-10">
 
-        {!loading && !artwork && (
-          <div className="text-center">Obra no encontrada</div>
-        )}
+        {/* LEFT COLUMN */}
+          <div>
 
-        {!loading && artwork && (
-          <div className="grid md:grid-cols-2 gap-10">
+            {/* MAIN IMAGE */}
+          <div>
 
-            {/* IMAGEN */}
-            <div>
+            <img
+              src={selectedImage || mainImage}
+              alt={artwork.name}
+              className="
+                w-full
+                rounded-2xl
+                shadow-lg
+                object-cover
+              "
+            />
+
+          </div>
+
+          {/* THUMBNAILS */}
+          <div className="flex gap-3 mt-4 flex-wrap">
+
+            {images.map((img, i) => (
+
               <img
-                src={artwork.image_url}
-                alt={artwork.name}
-                className="w-full rounded-2xl shadow-lg object-cover"
-              />
-            </div>
+                key={i}
+                src={img}
+                onClick={() => setSelectedImage(img)}
+                className={`
+                  w-16 h-16
+                  object-cover
+                  rounded-lg
+                  cursor-pointer
+                  border-2
+                  transition
 
-            {/* INFO */}
+                  ${
+                    selectedImage === img
+                      ? "border-black"
+                      : "border-transparent opacity-60 hover:opacity-100"
+                  }
+                `}
+              />
+
+            ))}
+
+          </div>
+        </div>
+
+
+             {/* RIGHT COLUMN */}
             <div className="space-y-6">
 
               <h1 className="text-3xl font-bold">
@@ -111,6 +168,10 @@ export default function ArtworkDetail() {
 
                   {/* BUY NOW */}
                   <Button
+                   onClick={() => {
+                    addToCart(artwork, false);
+                    navigate("/cart");
+                  }}
                     color={buttonColors.green}
                     size="md"
                     className="flex-1"
@@ -120,19 +181,18 @@ export default function ArtworkDetail() {
 
                   {/* ADD TO CART */}
                   <Button
+                    onClick={() => addToCart(artwork)}
                     color={buttonColors.orange}
                     size="md"
-                    className="flex-1"
-                    onClick={() => addToCart(artwork)}>
+                    className="flex-1">
                     Add to Cart 🛒
                   </Button>
-
-                </div>
 
             </div>
 
           </div>
-        )}
+
+        </div>
 
       </main>
 

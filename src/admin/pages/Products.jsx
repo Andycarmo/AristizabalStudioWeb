@@ -6,6 +6,11 @@ import ProductList from "../components/ProductList";
 import { supabase } from "../../config/supabase";
 import Swal from "sweetalert2";
 
+//lOAD => 45 
+//RESET => 94
+//CREATE => 120
+//DELETE => 473 - {416 - 499}
+
 import {
   getProducts,
   createProduct,
@@ -17,8 +22,7 @@ export default function Products() {
 
   const [products, setProducts] = useState([]);
   const [currency, setCurrency] = useState("COP");
-  const [imageFile, setImageFile] = useState(null);
-  const [hoverImageFile, setHoverImageFile] = useState(null);
+  const [images, setImages] = useState([]);
   const [technique, setTechnique] = useState("");
   const [form, setForm] = useState({
     name: "",
@@ -33,12 +37,13 @@ const [loading, setLoading] = useState(false);
 const [errorMessage, setErrorMessage] = useState("");
 const [editingProduct, setEditingProduct] = useState(null);
 const [successMessage, setSuccessMessage] = useState("");
+const [inputKey, setInputKey] = useState(Date.now());
+const messageRef = useRef(null);
 
   // ================= REFS =================
 const imageInputRef = useRef(null);
-const hoverInputRef = useRef(null);
 
-  // ================= LOAD PRODUCTS =================
+  // ================= LOAD PRODUCTS=================
   async function loadProducts() {
 
               const { data, error } = await getProducts();
@@ -55,6 +60,29 @@ const hoverInputRef = useRef(null);
             loadProducts();
             }, []);
 
+
+// ================= HANDLE IMAGE CHANGE =================
+function handleImageChange(e) {
+  const files = Array.from(e.target.files);
+
+  const newImages = files.map(file => ({
+    file,
+    role: "gallery", // default
+    preview: URL.createObjectURL(file),
+  }));
+
+  setImages(prev => [...prev, ...newImages]);
+}
+
+  // ================= SET IMAGE ROLE =================
+function setImageRole(index, role) {
+  setImages(prev =>
+    prev.map((img, i) =>
+      i === index ? { ...img, role } : img
+    )
+  );
+}
+
   // ================= HANDLE INPUT =================
   function handleChange(e) {
 
@@ -64,146 +92,164 @@ const hoverInputRef = useRef(null);
             });
           }
 
-    // ================= CLEAN FORM =================
+// ================= LIMPIAR CAMPOS =================
   function resetForm() {
+          setForm({
+            name: "",
+            price: "",
+            height: "",
+            width: "",
+            description: "",
+          });
 
-            setForm({
-              name: "",
-              price: "",
-              dimensions: "",
-              description: "",
-            });
+          setImages([]); // limpia imágenes con roles (MAIN / HOVER / GALLERY)
 
-            setImageFile(null);
-            setHoverImageFile(null);
-            setEditingProduct(null);
-            setTechnique("");
+          setEditingProduct(null);
+          setTechnique("");
 
-            // CLEAN FILE INPUTS
-            if (imageInputRef.current) {
-              imageInputRef.current.value = "";
-            }
+          // limpia errores si tienes
+          setErrorMessage("");
+        
+          // limpia input file visualmente
+          setInputKey(Date.now());
+        
+        }
 
-            if (hoverInputRef.current) {
-              hoverInputRef.current.value = "";
-            }
-          }
-
-  // ================= CREATE PRODUCT =================
-  async function handleCreateProduct() {
+      // ================= CREATE PRODUCT =================
+    async function handleCreateProduct() {
             try {
+              setLoading(true);
+              setErrorMessage("");
 
-                setLoading(true);
-                setErrorMessage("");
+              // ================= VALIDATIONS ================= 
+              if (!form.height || !form.width) { setErrorMessage("Debes agregar dimensiones"); return; }
+              if (!images.length) { setErrorMessage("Debes agregar imágenes"); return; }
 
-              let imageUrl = "";
-              let hoverImageUrl = "";
+              const mainImage = images.find(i => i.role === "main");
 
-              let fileName = "";
-              let hoverFileName = "";
+              if (!mainImage) {
+                setErrorMessage("Debes seleccionar MAIN image");
+                setTimeout(() => {
+                messageRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }, 100);
+                return;
+              }
+
+              // ================= SUBIR IMAGENES =================
+              let uploadedImages = [];
+
+              for (let img of images) {
+
+                // 🔥 EXISTING IMAGE
+                  if (!img.file) {
+
+                    uploadedImages.push({
+                      url: img.url,
+                      role: img.role,
+                    });
+
+                    continue;
+                  }
+
+                  // 🔥  ================= NEW IMAGE =================
+                  const fileName = `${Date.now()}-${img.file.name}`;
+
+                  const { error } = await supabase.storage
+                    .from("products")
+                    .upload(fileName, img.file);
+
+                  if (error) {
+                    setErrorMessage(error.message);
+                    setTimeout(() => {
+                    messageRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
+                  }, 100);
+                    return;
+                  }
+
+                  const { data } = supabase.storage
+                    .from("products")
+                    .getPublicUrl(fileName);
+
+                  uploadedImages.push({
+                    url: data.publicUrl,
+                    role: img.role,
+                  });
               
-              // ================= UPLOAD MAIN IMAGE =================
-              if (imageFile) {
-
-              fileName = `${Date.now()}-${imageFile.name}`;
-
-              const { error: uploadError } = await supabase.storage
-                .from("products")
-                .upload(fileName, imageFile);
-
-              if (uploadError) {
-                setErrorMessage(uploadError.message);
-                return;
               }
 
-              const { data } = supabase.storage
-                .from("products")
-                .getPublicUrl(fileName);
-
-              imageUrl = data.publicUrl;
-            }
-
-            // ================= UPLOAD HOVER IMAGE =================
-            if (hoverImageFile) {
-
-              hoverFileName = `${Date.now()}-${hoverImageFile.name}`;
-
-              const { error: hoverUploadError } = await supabase.storage
-                  .from("products")
-                  .upload(hoverFileName, hoverImageFile);
-
-              if (hoverUploadError) {
-                setErrorMessage(hoverUploadError.message);
-                return;
-              }
-
-              const { data: hoverData } = supabase.storage
-                .from("products")
-                .getPublicUrl(hoverFileName);
-
-              hoverImageUrl = hoverData.publicUrl;
-            }
-
-              // ================= CREATE PRODUCT =================
+              // ================= GUARDAR EN BD =================
               const { error } = await createProduct({
-                ...form,
-                slug: form.name
-                  .toLowerCase()
-                  .trim()
-                  .replace(/\s+/g, "-"),
-                price: Number(String(form.price).replace(/\./g, "").replace(/,/g, "")),
-                image_url: imageUrl,
-                hover_image_url: hoverImageUrl,
-                technique: technique, // 👈 AQUÍ
+                name: form.name, description: form.description,
+                slug: form.name.toLowerCase().trim().replace(/\s+/g, "-"),
+                price: Number(String(form.price).replace(/\D/g, "")),
+                // 🔥 NEW DIMENSIONS SYSTEM 
+                dimensions: `${form.height} x ${form.width} cm`,
+                images: uploadedImages,
+                technique,
               });
-              console.log(error);
 
               if (error) {
-                console.log(error);
-                setErrorMessage("Error creating product");
-                setLoading(false);
+                setErrorMessage(error.message);
+                setTimeout(() => {
+                  messageRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
+                }, 100);
                 return;
               }
 
-              // ================= SUCCESS =================
-                setSuccessMessage("Product created successfully");
-                setSuccess(true);
+              // SUCCESS
+          setSuccess(true);
+          setSuccessMessage("Product saved successfully");
 
-                setTimeout(() => {
-                  setSuccess(false);
-                }, 3000);
+            setTimeout(() => {
+            setSuccess(false);
+            setSuccessMessage("");
+            }, 3000);
 
-              // ================= RESET =================
+              // 4. 🔥 AQUÍ VA EL RESET (IMPORTANTE)
               resetForm();
 
-              // ================= RELOAD =================
+              // ================= RECARGAR LISTA =================
               loadProducts();
 
+              
             } catch (err) {
-
-              console.log(err);
-
               setErrorMessage("Unexpected error");
-
             } finally {
-
               setLoading(false);
             }
           }
-
   // ================= EDIT CLICK =================
       function handleEditClick(product) {
 
                   setEditingProduct(product);
 
+                  // 🔥 PARSE DIMENSIONS 
+                  const dimensions = product.dimensions || ""; 
+                  const [height, width] = dimensions 
+                  .replace("cm", "") .split("x") .map((v) => v.trim());
+
                   setForm({
                     name: product.name || "",
                     price: product.price || "",
-                    dimensions: product.dimensions || "",
+                    // 🔥 NEW DIMENSIONS 
+                    height: height || "", 
+                    width: width || "",
                     description: product.description || "",
                   });
 
                   setTechnique(product.technique || "");
+
+                  // 🔥 PRELOAD IMAGES
+                  setImages(product.images || []);
 
                   // 🔥 SCROLL TO TOP
                   window.scrollTo({
@@ -231,212 +277,131 @@ const hoverInputRef = useRef(null);
                   }, 3000);
                 }
 
-  // ================= REMOVE CURRENT IMAGE =================
-  async function handleRemoveCurrentImage() {
-
-            try {
-
-              // DELETE FROM STORAGE
-              if (editingProduct.image_url) {
-
-                const oldImagePath =
-                  getStoragePath(editingProduct.image_url);
-
-                await supabase.storage
-                  .from("products")
-                  .remove([oldImagePath]);
-              }
-
-              // UPDATE DATABASE
-              const { error } = await updateProduct(
-                editingProduct.id,
-                {
-                  image_url: null,
-                }
-              );
-
-              if (error) {
-                console.log(error);
-                return;
-              }
-
-              // UPDATE UI
-              setEditingProduct({
-                ...editingProduct,
-                image_url: null,
-              });
-
-            } catch (error) {
-
-              console.log(error);
-
-            }
-          }
-
-  // ================= REMOVE CURRENT HOVER IMAGE =================
-    async function handleRemoveCurrentHoverImage() {
-
-              try {
-
-                // DELETE FROM STORAGE
-                if (editingProduct.hover_image_url) {
-
-                  const oldHoverPath =
-                    getStoragePath(
-                      editingProduct.hover_image_url
-                    );
-
-                  await supabase.storage
-                    .from("products")
-                    .remove([oldHoverPath]);
-                }
-
-                // UPDATE DATABASE
-                const { error } = await updateProduct(
-                  editingProduct.id,
-                  {
-                    hover_image_url: null,
-                  }
-                );
-
-                if (error) {
-                  console.log(error);
-                  return;
-                }
-
-                // UPDATE UI
-                setEditingProduct({
-                  ...editingProduct,
-                  hover_image_url: null,
-                });
-
-              } catch (error) {
-
-                console.log(error);
-
-              }
-            }
-
   // ================= UPDATE PRODUCT =================
   async function handleUpdateProduct() {
 
-            try {
+          try {
 
-              setLoading(true);
-              setErrorMessage("");
+            setLoading(true);
+            setErrorMessage("");
+            // ================= VALIDATIONS =================
+            setTimeout(() => {
+                messageRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }, 100);
 
-              let imageUrl = editingProduct.image_url;
-              let hoverImageUrl = editingProduct.hover_image_url;
+            // ================= VALIDATIONS =================
+            if (!form.height || !form.width) { setErrorMessage("Debes agregar dimensiones"); return; }
+            if (!images.length) { setErrorMessage("Debes agregar imágenes"); return; }
 
-          // ================= NEW IMAGE =================
-          if (imageFile) {
+            const mainImage = images.find(
+              (img) => img.role === "main"
+            );
 
-                      // DELETE OLD IMAGE
-              if (editingProduct.image_url) {
+            if (!mainImage) {
+              setErrorMessage("Debes seleccionar MAIN image");
+              return;
+            }
 
-                const oldImagePath =
-                  getStoragePath(editingProduct.image_url);
+            let uploadedImages = [];
 
-                await supabase.storage
-                  .from("products")
-                  .remove([oldImagePath]);
+            // ================= PROCESS IMAGES =================
+            for (let img of images) {
+
+              // 🔥 EXISTING IMAGE
+              if (!img.file) {
+
+                uploadedImages.push({
+                  url: img.url,
+                  role: img.role,
+                });
+
+                continue;
               }
 
-            const fileName = `${Date.now()}-${imageFile.name}`;
+              // 🔥 NEW IMAGE
+              const fileName = `${Date.now()}-${img.file.name}`;
 
-            const { error: uploadError } = await supabase.storage
-              .from("products")
-              .upload(fileName, imageFile);
+              const { error: uploadError } = await supabase.storage
+                .from("products")
+                .upload(fileName, img.file);
 
-            if (uploadError) {
-              setErrorMessage(uploadError.message);
+              if (uploadError) {
+                setErrorMessage(uploadError.message);
+                return;
+              }
+
+              const { data } = supabase.storage
+                .from("products")
+                .getPublicUrl(fileName);
+
+              uploadedImages.push({
+                url: data.publicUrl,
+                role: img.role,
+              });
+            }
+
+            // ================= UPDATE DB =================
+            const { error } = await updateProduct(
+              editingProduct.id,
+              {
+                name: form.name, description: form.description,
+                slug: form.name
+                  .toLowerCase()
+                  .trim()
+                  .replace(/\s+/g, "-"),
+                price: Number( String(form.price) .replace(/\./g, "") .replace(/,/g, "") ),
+                // 🔥 NEW DIMENSIONS SYSTEM 
+                dimensions: `${form.height} x ${form.width} cm`,
+                images: uploadedImages,
+                technique,
+              }
+            );
+
+            if (error) {
+              setErrorMessage(error.message);
+              setTimeout(() => {
+                messageRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }, 100);
               return;
             }
 
-            const { data } = supabase.storage
-              .from("products")
-              .getPublicUrl(fileName);
-
-            imageUrl = data.publicUrl;
-          }
-
-          // ================= NEW HOVER IMAGE =================
-          if (hoverImageFile) {
-
-            // DELETE OLD HOVER IMAGE
-          if (editingProduct.hover_image_url) {
-
-            const oldHoverPath =
-              getStoragePath(editingProduct.hover_image_url);
-
-            await supabase.storage
-              .from("products")
-              .remove([oldHoverPath]);
-          }
-
-            const hoverFileName =
-              `${Date.now()}-${hoverImageFile.name}`;
-
-            const { error: hoverUploadError } =
-              await supabase.storage
-                .from("products")
-                .upload(hoverFileName, hoverImageFile);
-
-            if (hoverUploadError) {
-              setErrorMessage(hoverUploadError.message);
-              return;
-            }
-
-            const { data: hoverData } =
-              supabase.storage
-                .from("products")
-                .getPublicUrl(hoverFileName);
-
-            hoverImageUrl = hoverData.publicUrl;
-          }
-
-          // ================= UPDATE DB =================
-          const { error } = await updateProduct(
-          editingProduct.id,
-          {
-            ...form,
-            slug: form.name
-              .toLowerCase()
-              .trim()
-              .replace(/\s+/g, "-"),
-            price: Number(String(form.price).replace(/\./g, "").replace(/,/g, "")),
-            image_url: imageUrl,
-            hover_image_url: hoverImageUrl,
-            technique: technique,
-          }
-        );
-
-          if (error) {
-            setErrorMessage(error.message);
-            return;
-          }
-
-          // ================= RESET =================
+            // ================= RESET =================
             resetForm();
 
+            // ================= SUCCESS =================
             setSuccessMessage("Product updated successfully");
+
             setSuccess(true);
 
             setTimeout(() => {
               setSuccess(false);
+              setSuccessMessage("");
             }, 3000);
 
+            // ================= RELOAD =================
             loadProducts();
 
           } catch (err) {
 
-            console.log("FULL ERROR:", err);
-            setErrorMessage(err.message || JSON.stringify(err));
+            console.log(err);
+
+            setErrorMessage(
+              err.message || "Unexpected error"
+            );
+
           } finally {
 
             setLoading(false);
+
           }
         }
+
 
   // ================= CONFIRM DELETE =================
   async function confirmDelete(product) {
@@ -492,47 +457,21 @@ const hoverInputRef = useRef(null);
 
         try {
 
-          // ================= DELETE MAIN IMAGE =================
-          if (product.image_url) {
+         // ================= GET FILE PATHS =================
+          const filePaths = product.images.map((img) =>
+            getStoragePath(img.url)
+          )|| [];;
 
-            const imagePath =
-              getStoragePath(product.image_url);
+          // ================= DELETE STORAGE FILES =================
+          const { error: storageError } = await supabase.storage
+            .from("products")
+            .remove(filePaths);
 
-            console.log("FULL IMAGE URL:");
-            console.log(product.image_url);
-
-            console.log("IMAGE PATH:");
-            console.log(imagePath);
-
-            const { data, error } = await supabase.storage
-              .from("products")
-              .remove([imagePath]);
-
-            console.log("REMOVE RESULT:");
-            console.log(data);
-            console.log(error);
+          if (storageError) {
+            console.log(storageError);
+            return;
           }
 
-          // ================= DELETE HOVER IMAGE =================
-          if (product.hover_image_url) {
-
-            const hoverImagePath =
-              getStoragePath(product.hover_image_url);
-
-            console.log("FULL HOVER URL:");
-            console.log(product.hover_image_url);
-
-            console.log("HOVER PATH:");
-            console.log(hoverImagePath);
-
-            const { data, error } = await supabase.storage
-              .from("products")
-              .remove([hoverImagePath]);
-
-            console.log("REMOVE HOVER RESULT:");
-            console.log(data);
-            console.log(error);
-          }
           // ================= DELETE DB RECORD =================
           const { error } = await deleteProduct(product.id);
 
@@ -541,10 +480,10 @@ const hoverInputRef = useRef(null);
             return;
           }
 
+          // ================= RELOAD PRODUCTS =================
           loadProducts();
 
         } catch (err) {
-
           console.log(err);
         }
       }
@@ -574,6 +513,23 @@ const hoverInputRef = useRef(null);
                 price: formattedValue,
               });
             }
+
+  // ================= HANDLE IMAGE CHANGE =================
+  function handleImageChange(e) {
+        const files = Array.from(e.target.files);
+
+        const newImages = files.map((file) => ({
+          file,
+          preview: URL.createObjectURL(file),
+          role: "gallery", // default
+        }));
+
+        setImages((prev) => [...prev, ...newImages]);
+      }
+
+  function removeImage(index) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }
   return (
     <AdminLayout>
 
@@ -582,7 +538,7 @@ const hoverInputRef = useRef(null);
 
         <div>
           <h1 className="text-3xl font-bold text-white">
-            Products
+            Productos
           </h1>
 
           <p className="text-gray-400 mt-1">
@@ -593,38 +549,31 @@ const hoverInputRef = useRef(null);
       </div>
 
       <ProductForm
-        form={form}
-        handleChange={handleChange}
-        handlePriceChange={handlePriceChange}
+          form={form}
+          handleChange={handleChange}
+          handlePriceChange={handlePriceChange}
 
-        currency={currency}
-        setCurrency={setCurrency}
+          currency={currency}
+          setCurrency={setCurrency}
 
-        imageInputRef={imageInputRef}
-        hoverInputRef={hoverInputRef}
+          images={images}
+          handleImageChange={handleImageChange}
+          setImageRole={setImageRole}
+          removeImage={removeImage}
 
-        setImageFile={setImageFile}
-        setHoverImageFile={setHoverImageFile}
+          editingProduct={editingProduct}
+          handleCancelEdit={handleCancelEdit}
 
-        imageFile={imageFile}
-        hoverImageFile={hoverImageFile}
+          technique={technique}
+          setTechnique={setTechnique}
 
-        editingProduct={editingProduct}
-        handleCancelEdit={handleCancelEdit}
+          loading={loading}
+          handleCreateProduct={handleCreateProduct}
+          handleUpdateProduct={handleUpdateProduct}
 
-        handleRemoveCurrentImage={handleRemoveCurrentImage}
-        handleRemoveCurrentHoverImage={handleRemoveCurrentHoverImage}
-
-        editingProduct={editingProduct}
-        
-        technique={technique}
-        setTechnique={setTechnique}
-
-        loading={loading}
-
-        handleCreateProduct={handleCreateProduct}
-        handleUpdateProduct={handleUpdateProduct}
-      />
+          inputKey={inputKey}
+          imageInputRef={imageInputRef}
+        />
 
       <ProductList
         products={products}
@@ -636,6 +585,7 @@ const hoverInputRef = useRef(null);
         success={success}
         successMessage={successMessage}
         errorMessage={errorMessage}
+        messageRef={messageRef}
       />
 
     </AdminLayout>

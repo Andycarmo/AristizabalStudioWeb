@@ -5,6 +5,14 @@ export const getProducts = () =>
   supabase
     .from("products")
     .select("*")
+    .eq("type", "product")
+    .order("created_at", { ascending: false });
+
+// ================= GET aALL PRODUCTS =================
+export const getAllProducts = () =>
+  supabase
+    .from("products")
+    .select("*")
     .order("created_at", { ascending: false });
 
 // ================= CREATE PRODUCT =================
@@ -38,3 +46,12 @@ export async function getProductBySlug(slug) {
   if (error) throw error;
   return data;
 }
+
+// ================= rECENT WORKS =================
+export const getRecentWorks = () =>
+  supabase
+    .from("products")
+    .select("*")
+    .eq("type", "recent_work")
+    .order("created_at", { ascending: false });
+

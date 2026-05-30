@@ -11,7 +11,13 @@ export default function Contact() {
 
         {/* FORMULARIO */}
         <div>
-          <h2 className="text-4xl md:text-5xl font-cocomat text-[#e88c95] mb-10 leading-tight">
+          <h2 className="
+          font-cocomat font-bold
+          text-studio-green
+          text-4xl 
+          md:text-5xl 
+          mb-10 
+          leading-tight">
             Let’s turn <br /> ideas into art! 
           </h2>
 

@@ -6,412 +6,290 @@ export default function ProductForm({
   currency,
   setCurrency,
 
-  imageInputRef,
-  hoverInputRef,
+  images = [],
+  setImages,
 
-  setImageFile,
-  setHoverImageFile,
-
-  imageFile,
-  hoverImageFile,
+  inputKey,
 
   editingProduct,
   handleCancelEdit,
-
-  handleRemoveCurrentImage,
-  handleRemoveCurrentHoverImage,
 
   technique,
   setTechnique,
 
   loading,
 
+  handleImageChange,
+  setImageRole,
+  removeImage,
+
   handleCreateProduct,
   handleUpdateProduct,
-}) {
-  return (
 
+    imageInputRef, // 👈 🔥 ESTO FALTABA
+}) {
+
+  return (
     <div className="bg-gray-800 p-6 rounded-2xl mb-8">
 
-        {/* EDIT MODE */}
-            {editingProduct && (
+      {/* EDIT MODE */}
+      {editingProduct && (
+        <div className="mb-6 bg-yellow-500/20 border border-yellow-500 text-yellow-300 px-4 py-3 rounded-xl flex justify-between items-center">
+          <div>
+            ✏️ Editing Product:
+            <span className="font-semibold ml-2">
+              {editingProduct.name}
+            </span>
+          </div>
 
-              <div
-                className="
-                  mb-6
-                  bg-yellow-500/20
-                  border
-                  border-yellow-500
-                  text-yellow-300
-                  px-4
-                  py-3
-                  rounded-xl
-
-                  flex
-                  items-center
-                  justify-between
-                  gap-4
-                "
-              >
-
-                {/* LEFT */}
-                <div>
-                  ✏️ Editing Product:
-                  <span className="font-semibold ml-2">
-                    {editingProduct.name}
-                  </span>
-                </div>
-
-                {/* CANCEL BUTTON */}
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  className="
-                    px-4
-                    py-2
-                    rounded-lg
-
-                    bg-yellow-500
-                    text-black
-
-                    text-sm
-                    font-semibold
-
-                    hover:bg-yellow-400
-
-                    transition
-                  "
-                >
-                  Cancel
-                </button>
-
-              </div>
-
-            )}
-
-
-          {/* CREATE MODE */}
+          <button
+            type="button"
+            onClick={handleCancelEdit}
+            className="px-4 py-2 bg-yellow-500 text-black rounded-lg text-sm font-semibold hover:bg-yellow-400"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       <h2 className="text-xl font-semibold mb-6">
-        Create Product
+        {editingProduct ? "Edit Product" : "Create Product"}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        {/* NAME */}
+        {/* ================= NAME ================= */}
         <input
           type="text"
           name="name"
-          placeholder="Product Name"
+          placeholder="Nombre del Producto"
           value={form.name}
           onChange={handleChange}
-          className="bg-gray-900 p-3 rounded-xl outline-none"
+          className="bg-gray-900 p-3 rounded-xl"
         />
 
-        {/* PRICE */}
-        <div className="flex items-center gap-3">
+        {/* ================= PRICE ================= */}
+        <div className="flex gap-3">
 
-          {/* CURRENCY SELECT */}
-          <div className="relative">
+          <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+            className="bg-gray-900 p-3 rounded-xl"
+          >
+            <option value="COP">COP</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
 
-            <select
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="
-                appearance-none
-                bg-gray-900
-                border
-                border-gray-700
-                rounded-xl
-                px-4
-                py-3
-                pr-10
-                outline-none
-                focus:border-blue-500
-                cursor-pointer
-              "
-            >
-              <option value="COP">COP</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-            </select>
-
-            {/* TRIANGLE */}
-            <span
-              className="
-                absolute
-                right-3
-                top-1/2
-                -translate-y-1/2
-                text-gray-400
-                pointer-events-none
-              "
-            >
-              ▼
-            </span>
-
-          </div>
-
-          {/* PRICE INPUT */}
           <input
             type="text"
             name="price"
-            placeholder={
-              currency === "COP"
-                ? "000"
-                : "000"
-            }
             value={form.price}
             onChange={handlePriceChange}
-            className="
-              flex-1
+            className="flex-1 bg-gray-900 p-3 rounded-xl"
+          />
+        </div>
+{/* ================= Section Dimensions - Tecnique  ================= */}
+      {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-4">*/}
+
+            {/* ================= DIMENSIONS ================= */}
+            
+            <div className="flex flex-col gap-1">
+          <label>Dimensions</label>
+            <div className="
               bg-gray-900
+              p-4
+              rounded-2xl
               border
               border-gray-700
-              rounded-xl
-              p-3
-              outline-none
-              focus:border-blue-500
-            "
-          />
+            ">
 
-        </div>
+             {/* <p className="text-sm font-semibold mb-3">
+                Dimensions
+              </p>*/}
 
-        {/* DIMENSIONS */}
-        <div className="relative">
+              <div className="flex items-end gap-3">
 
-          <input
-            type="text"
-            name="dimensions"
-            placeholder="(example: 80 x 120)"
-            value={form.dimensions}
-            onChange={handleChange}
-            className="
-              w-full
-              bg-gray-900
-              p-3
-              pr-14
-              rounded-xl
-              outline-none
-              border
-              border-gray-700
-              focus:border-blue-500
-            "
-          />
+                {/* HEIGHT */}
+                <div className="flex-1">
+                  <label className="text-xs text-gray-400 mb-1 block">
+                    Height
+                  </label>
 
-          {/* UNIT */}
-          <span
-            className="
-              absolute
-              right-4
-              top-1/2
-              -translate-y-1/2
-              text-gray-400
-              pointer-events-none
-              text-sm
-            "
-          >
-            cm
-          </span>
+                  <input
+                    type="number"
+                    name="height"
+                    placeholder="80"
+                    value={form.height || ""}
+                    onChange={handleChange}
+                    className="
+                      w-full
+                      bg-gray-800
+                      p-3
+                      rounded-xl
+                    "
+                  />
+                </div>
 
-        </div>
+                {/* X */}
+                <div className="pb-3 text-gray-400 font-bold">
+                  X
+                </div>
 
-        {/* IMAGES */}
-        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* WIDTH */}
+                <div className="flex-1">
+                  <label className="text-xs text-gray-400 mb-1 block">
+                    Width
+                  </label>
 
-          {/* MAIN IMAGE */}
-          <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
+                  <input
+                    type="number"
+                    name="width"
+                    placeholder="120"
+                    value={form.width || ""}
+                    onChange={handleChange}
+                    className="
+                      w-full
+                      bg-gray-800
+                      p-3
+                      rounded-xl
+                    "
+                  />
+                </div>
 
-            <h3 className="text-lg font-semibold mb-1">
-              Main Image
-            </h3>
+                {/* UNIT */}
+                <div className="
+                  pb-3
+                  text-sm
+                  text-gray-400
+                  min-w-[30px]
+                ">
+                  cm
+                </div>
 
-            <p className="text-sm text-gray-400 mb-4">
-              Visible by default in the gallery
-            </p>
+              </div>
 
-            <input
-              ref={imageInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImageFile(e.target.files[0])}
-              className="
-                w-full
-                bg-gray-800
-                p-3
-                rounded-xl
-                outline-none
-              "
-            />
-
-            {/* PREVIEW */}
-            {(imageFile || editingProduct?.image_url) && (
-              <img
-                src={
-                  imageFile
-                    ? URL.createObjectURL(imageFile)
-                    : editingProduct.image_url
-                }
-                alt="Preview"
-                className="
-                  mt-4
-                  w-full
-                  h-52
-                  object-contain
-                  bg-gray-800
-                  border border-gray-700
-                  rounded-xl
-                  p-2
-                  border border-gray-700
-                "
-              />
-            )}
-
-            {/* REMOVE CURRENT IMAGE */}
-            {editingProduct?.image_url && !imageFile && (
-
-              <button
-                type="button"
-                onClick={handleRemoveCurrentImage}
-                className="
-                  mt-4
-                  w-full
-
-                  border
-                  border-red-500
-
-                  text-red-400
-
-                  py-3
-                  rounded-xl
-
-                  hover:bg-red-500
-                  hover:text-white
-
-                  transition
-                "
-              >
-                Remove Current Image
-              </button>
-
-            )}
-
+           </div>
           </div>
 
-          {/* HOVER IMAGE */}
-          <div className="bg-gray-900 p-4 rounded-2xl border border-gray-700">
-
-            <h3 className="text-lg font-semibold mb-1">
-              Hover Image
-            </h3>
-
-            <p className="text-sm text-gray-400 mb-4">
-              Appears when hovering the artwork
-            </p>
-
-            <input
-              ref={hoverInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => setHoverImageFile(e.target.files[0])}
-              className="
-                w-full
-                bg-gray-800
-                p-3
-                rounded-xl
-                outline-none
-              "
-            />
-
-            {/* PREVIEW */}
-            {(hoverImageFile || editingProduct?.hover_image_url) && (
-              <img
-                src={
-                  hoverImageFile
-                    ? URL.createObjectURL(hoverImageFile)
-                    : editingProduct.hover_image_url
-                }
-                alt="Hover Preview"
-                className="
-                  mt-4
-                  w-full
-                  h-52
-                  object-contain
-                  bg-gray-800
-                  border border-gray-700
-                  rounded-xl
-                  p-2
-                "
-              />
-            )}
-
-            {/* REMOVE CURRENT HOVER IMAGE */}
-            {editingProduct?.hover_image_url &&
-              !hoverImageFile && (
-
-              <button
-                type="button"
-                onClick={handleRemoveCurrentHoverImage}
-                className="
-                  mt-4
-                  w-full
-
-                  border
-                  border-red-500
-
-                  text-red-400
-
-                  py-3
-                  rounded-xl
-
-                  hover:bg-red-500
-                  hover:text-white
-
-                  transition
-                "
-              >
-                Remove Hover Image
-              </button>
-
-            )}
-
-          </div>
-
-        </div>
-
-        {/* TECHNIQUE */}
+  {/* ================= TECHNIQUE ================= */}
+  
         <div className="flex flex-col gap-1">
-
-          <label>Técnica</label>
-
+          <label>Técnica Usada</label>
           <select
             value={technique}
             onChange={(e) => setTechnique(e.target.value)}
             className="bg-gray-900 p-3 rounded-xl"
           >
-            <option value="">Select technique</option>
-            <option value="Oil Painting">Oil Painting</option>
-            <option value="Acrylic">Acrylic</option>
-            <option value="Watercolor">Watercolor</option>
-            <option value="Mixed Media">Mixed Media</option>
+            <option value="">Select</option>
+            <option value="Oil Painting">Oleo</option>
+            <option value="Acrylic">Acuarela</option>
             <option value="Digital">Digital</option>
           </select>
-
         </div>
 
-        {/* DESCRIPTION */}
+{/*</div>*/}
+  {/* ================= IMAGES ================= */}
+        <div className="md:col-span-2 bg-gray-900 p-4 rounded-2xl border border-gray-700">
+
+          <h3 className="font-semibold mb-2">Images</h3>
+
+          <input
+            key={inputKey}
+            ref={imageInputRef}
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full p-2 bg-gray-800 rounded-xl"
+          />
+
+          {/* PREVIEW GRID */}
+          <div className="mt-4">
+            <p className="text-xs text-gray-400 mb-3">
+              Seleccionadas: {images.length}
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className="relative group rounded-xl overflow-hidden border border-gray-700"
+                >
+
+                  {/* IMAGE */}
+                  <img
+                    src={img.preview || img.url}
+                    alt=""
+                    className="w-full h-28 object-cover"
+                    onError={(e) => {
+                      e.target.src = "/placeholder.webp";
+                    }}
+                  />
+
+                  {/* BADGES */}
+                  {img.role === "main" && (
+                    <div className="absolute top-2 left-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-md font-bold">
+                      MAIN
+                    </div>
+                  )}
+
+                  {img.role === "hover" && (
+                    <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-md font-bold">
+                      HOVER
+                    </div>
+                  )}
+
+                  {/* ACTIONS */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center gap-2 transition">
+
+                    <button
+                      type="button"
+                      onClick={() => setImageRole(index, "main")}
+                      className="bg-yellow-500 text-black px-3 py-1 rounded-md text-xs"
+                    >
+                      Set MAIN
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setImageRole(index, "hover")}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md text-xs"
+                    >
+                      Set HOVER
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-md text-xs"
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+          </div>
+        </div>
+
+        {/* ================= DESCRIPTION ================= */}
         <textarea
           name="description"
-          placeholder="Description"
           value={form.description}
           onChange={handleChange}
           rows="4"
-          className="bg-gray-900 p-3 rounded-xl outline-none md:col-span-2"
+          placeholder="Descripción"
+          className="md:col-span-2 bg-gray-900 p-3 rounded-xl"
         />
 
       </div>
 
-      {/* BUTTON */}
+      {/* ================= BUTTON ================= */}
       <button
         onClick={
           editingProduct
@@ -423,9 +301,9 @@ export default function ProductForm({
         mt-6 
         bg-blue-600 
         hover:bg-blue-700 
-        px-6 py-3 
-        rounded-xl
-        disabled:opacity-50"
+        px-6 
+        py-3 
+        rounded-xl"
       >
         {loading
           ? "Saving..."
@@ -434,7 +312,8 @@ export default function ProductForm({
             : "Create Product"}
       </button>
 
-    </div>
+      
 
+    </div>
   );
 }

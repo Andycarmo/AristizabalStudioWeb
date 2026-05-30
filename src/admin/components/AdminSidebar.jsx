@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import {
   LayoutDashboard,
   ShoppingBag,
   ClipboardList,
+  Users,
+  LayoutGrid,
+  BarChart3,
   Settings,
+  Images,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -14,36 +18,234 @@ export default function Sidebar() {
 
       <nav className="flex flex-col gap-3 text-gray-300">
 
-        <Link 
+        <NavLink 
         to="/studio-dashboard"
-        className="flex items-center gap-2 hover:text-white" >
+        end
+       className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
         <LayoutDashboard size={18} />
           Dashboard
-        </Link>
+        </NavLink>
 
-        <Link
+        <NavLink
           to="/studio-dashboard/products"
-          className= "flex items-center gap-2 hover:text-white"
-          >
-        <ShoppingBag size={18} />
-          Productos para venta
-        </Link>
+          className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
 
-        <Link 
-        to="/studio-dashboard/orders"
-        className="flex items-center gap-2 hover:text-white"
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
         >
+
+          <ShoppingBag size={18} />
+
+          Productos
+
+        </NavLink>
+
+        <NavLink 
+        to="/studio-dashboard/works"
+        className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
+        <Images size={20} />
+
+          Recent Works
+
+        </NavLink>
+
+        <NavLink 
+        to="/studio-dashboard/orders"
+        className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
         <ClipboardList size={18} />
           Ordenes
-        </Link>
+        </NavLink>
 
-        <Link
-        to="/studio-dashboard/settings"
-         className="flex items-center gap-2 hover:text-white"
-          >
+        <NavLink 
+        to="/studio-dashboard/customers"
+       className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
+        <Users size={18} />
+          Customers
+        </NavLink>
+
+        <NavLink 
+        to="/studio-dashboard/categories"
+        className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
+        <LayoutGrid size={18} />
+          Categories
+        </NavLink>
+
+        <NavLink 
+        to="/studio-dashboard/analytics"
+        className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
+        <BarChart3 size={18} />
+          Analytics
+        </NavLink>
+
+        <NavLink
+          to="/studio-dashboard/settings"
+         className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
           <Settings size={18} />
           Configuración
-        </Link>
+        </NavLink>
       </nav>
     </aside>
   );

@@ -30,41 +30,55 @@ export function CartProvider({ children }) {
 }, [cart]);
 
   // ================= ADD TO CART =================
-  function addToCart(product) {
+    function addToCart(product, openSidebar = true) {
 
-    setCart((prev) => {
 
-      const existing = prev.find(
-        (item) => item.id === product.id
-      );
+      // MAIN IMAGE
+      const mainImage =
+        product.images?.find(
+          (img) => img.role === "main"
+        )?.url || "";
 
-      // IF EXISTS
-      if (existing) {
+      setCart((prev) => {
 
-        return prev.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
+        const existing = prev.find(
+          (item) => item.id === product.id
         );
+
+        // IF EXISTS
+        if (existing) {
+
+          return prev.map((item) =>
+            item.id === product.id
+              ? {
+                  ...item,
+                  quantity: item.quantity + 1,
+                }
+              : item
+          );
+        }
+
+        // NEW PRODUCT
+        return [
+          ...prev,
+          {
+            id: product.id,
+            name: product.name,
+            slug: product.slug,
+            price: product.price,
+            currency: product.currency,
+            technique: product.technique,
+            image: mainImage,
+            quantity: 1,
+          },
+        ];
+      });
+
+      // OPEN SIDEBAR
+      if (openSidebar) {
+        setIsCartOpen(true);
       }
-
-      // NEW PRODUCT
-      return [
-        ...prev,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ];
-    });
-
-    // OPEN SIDEBAR
-    setIsCartOpen(true);
-  }
-
+    }
   // ================= REMOVE =================
   function removeFromCart(id) {
 

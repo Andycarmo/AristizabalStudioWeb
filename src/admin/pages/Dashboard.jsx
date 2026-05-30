@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProducts } from "../../services/products";
+import { getAllProducts } from "../../services/products";
 import AdminLayout from "../layouts/AdminLayout";
 import DashboardMetrics from "../components/DashboardMetrics";
 
@@ -13,7 +13,7 @@ export default function Dashboard() {
 
     async function loadProducts() {
 
-      const { data, error } = await getProducts();
+      const { data, error } = await getAllProducts();
 
       if (data) {
         setProducts(data);
@@ -28,7 +28,7 @@ export default function Dashboard() {
     <div className="mb-8">
 
       <h1 className="text-3xl font-bold text-white">
-        Welcome back 👋
+        Welcome back Angelica 👋
       </h1>
 
       <p className="text-gray-400 mt-2">
