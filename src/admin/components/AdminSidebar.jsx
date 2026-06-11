@@ -107,6 +107,36 @@ export default function Sidebar() {
 
         </NavLink>
 
+
+ <NavLink 
+        to="/studio-dashboard/customers"
+       className={({ isActive }) =>
+            `
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-2
+              rounded-xl
+
+              transition-all
+              duration-200
+
+              ${
+                isActive
+                  ? "bg-white text-black font-semibold"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800"
+              }
+            `
+          }
+        >
+
+        <Users size={18} />
+          Customers
+        </NavLink>
+
+
         <NavLink 
         to="/studio-dashboard/orders"
         className={({ isActive }) =>
@@ -135,34 +165,7 @@ export default function Sidebar() {
           Ordenes
         </NavLink>
 
-        <NavLink 
-        to="/studio-dashboard/customers"
-       className={({ isActive }) =>
-            `
-              flex
-              items-center
-              gap-2
-
-              px-3
-              py-2
-              rounded-xl
-
-              transition-all
-              duration-200
-
-              ${
-                isActive
-                  ? "bg-white text-black font-semibold"
-                  : "text-gray-300 hover:text-white hover:bg-gray-800"
-              }
-            `
-          }
-        >
-
-        <Users size={18} />
-          Customers
-        </NavLink>
-
+       
         <NavLink 
         to="/studio-dashboard/categories"
         className={({ isActive }) =>

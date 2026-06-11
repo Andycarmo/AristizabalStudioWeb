@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../config/supabase";
 import AdminLayout from "../layouts/AdminLayout";
+import Swal from "sweetalert2";
+import {
+  Trash2,
+} from "lucide-react";
 
 export default function Works() {
 
@@ -153,6 +157,16 @@ async function loadWorks() {
   }
 }
 
+// ================= GET STORAGE PATH =================
+function getStoragePath(url) {
+  if (!url) return "";
+
+  const parts =
+    url.split("/storage/v1/object/public/products/");
+
+  return decodeURIComponent(parts[1]);
+}
+
   // ================= RESET CAMPOS  =================
   function resetForm() {
 
@@ -164,6 +178,81 @@ async function loadWorks() {
 
   setInputKey(Date.now());
 
+}
+
+// ================= CONFIRM DELETE =================
+async function confirmDelete(work) {
+  const result = await Swal.fire({
+    title: "Delete Work?",
+    text: `"${work.name}" will be permanently deleted.`,
+    icon: "warning",
+
+    background: "#1f2937",
+    color: "#fff",
+
+    showCancelButton: true,
+
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#374151",
+
+    confirmButtonText: "Yes, delete it",
+    cancelButtonText: "Cancel",
+  });
+
+  if (result.isConfirmed) {
+    await handleDeleteWork(work);
+
+    Swal.fire({
+      title: "Deleted!",
+      text: "Work removed successfully.",
+      icon: "success",
+
+      background: "#1f2937",
+      color: "#fff",
+
+      confirmButtonColor: "#2563eb",
+    });
+  }
+}
+
+// ================= DELETE WORK =================
+async function handleDeleteWork(work) {
+  try {
+
+    // ================= GET FILE PATHS =================
+    const filePaths =
+      work.images?.map((img) =>
+        getStoragePath(img)
+      ) || [];
+
+    // ================= DELETE STORAGE FILES =================
+    const { error: storageError } =
+      await supabase.storage
+        .from("products")
+        .remove(filePaths);
+
+    if (storageError) {
+      console.log(storageError);
+      return;
+    }
+
+    // ================= DELETE DB RECORD =================
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", work.id);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    // ================= RELOAD WORKS =================
+    loadWorks();
+
+  } catch (err) {
+    console.log(err);
+  }
 }
 
   // ================= UI =================
@@ -322,7 +411,6 @@ async function loadWorks() {
                 bg-gray-900
                 border
                 border-gray-700
-
                 flex
                 items-center
                 justify-center
@@ -427,25 +515,56 @@ async function loadWorks() {
                   overflow-hidden
                   border
                   border-gray-700
+                  flex
+                  flex-col
                 "
               >
                 <img
                   src={work.images?.[0]}
                   alt={work.name}
                   className="
-                    grid
-                    grid-cols-2
-                    md:grid-cols-3
-                    lg:grid-cols-4
-                    xl:grid-cols-5
-                    gap-4
+                    w-full
+                    p-3
+                    h-64
+                    object-contain
                   "
                 />
 
-                <div className="p-4">
-                  <h3 className="font-semibold text-white">
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="
+                  bg-gray-800
+                  text-center
+                  rounded-xl
+                  font-semibold text-white">
                     {work.name}
                   </h3>
+
+                {/* BUTTON */}
+                <div className="mt-auto pt-4">
+                  {/* DELETE */}
+                      <button
+                        onClick={() => confirmDelete(work)}
+                        className="
+                          w-full
+                          flex
+                          items-center
+                          gap-2
+                          px-4
+                          py-2
+                          border
+                          border-red-500
+                          text-red-400
+                          rounded-xl
+                          hover:bg-red-500
+                          hover:text-white
+                          transition
+                          
+                        "
+                      >
+                        <Trash2 size={16} />
+                        Delete
+                      </button>
+                    </div>
                 </div>
               </div>
             ))}

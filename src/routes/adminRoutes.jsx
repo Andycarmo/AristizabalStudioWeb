@@ -46,15 +46,6 @@ export default function AdminRoutes() {
         }
       />
 
-      {/* ORDERS */}
-      <Route
-        path="/studio-dashboard/orders"
-        element={
-        <ProtectedRoute>
-          <Orders />
-        </ProtectedRoute>}
-      />
-
       {/* CUSTOMERS */}
       <Route
         path="/studio-dashboard/customers"
@@ -64,6 +55,17 @@ export default function AdminRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* ORDERS */}
+      <Route
+        path="/studio-dashboard/orders"
+        element={
+        <ProtectedRoute>
+          <Orders />
+        </ProtectedRoute>}
+      />
+
+
 
       {/* CATEGORIES */}
       <Route

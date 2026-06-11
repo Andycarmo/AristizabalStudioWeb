@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { getCustomers } from "../../services/customers";
 import AdminLayout from "../layouts/AdminLayout";
 
 import {
@@ -11,61 +13,98 @@ import {
 export default function Customers() {
 
   // ================= MOCK CUSTOMERS =================
-  const customers = [
-    {
-      id: 1,
-      name: "Sophia Miller",
-      email: "sophia@example.com",
-      orders: 12,
-      spent: "$2,450",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Daniel Smith",
-      email: "daniel@example.com",
-      orders: 5,
-      spent: "$840",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Emma Johnson",
-      email: "emma@example.com",
-      orders: 1,
-      spent: "$120",
-      status: "New",
-    },
-  ];
-
+const [customers, setCustomers] = useState([]);
+const [loading, setLoading] = useState(true);
   // ================= KPIs =================
-  const metrics = [
-    {
-      title: "Total Customers",
-      value: "842",
-      icon: Users,
-    },
-    {
-      title: "New Customers",
-      value: "24",
-      icon: UserPlus,
-    },
-    {
-      title: "Orders",
-      value: "356",
-      icon: ShoppingCart,
-    },
-    {
-      title: "Revenue",
-      value: "$12,450",
-      icon: DollarSign,
-    },
-  ];
+const totalCustomers = customers.length;
 
+const totalLeads = customers.filter(
+  (c) => c.customer_type === "lead"
+).length;
+
+const totalCustomersReal = customers.filter(
+  (c) => c.customer_type === "customer"
+).length;
+
+const totalRevenue = customers.reduce(
+  (sum, c) => sum + Number(c.total_spent || 0),
+  0
+);
+
+const [error, setError] = useState("");
+
+const metrics = [
+  {
+    title: "Total Contacts",
+    value: totalCustomers,
+    icon: Users,
+  },
+  {
+    title: "Leads",
+    value: totalLeads,
+    icon: UserPlus,
+  },
+  {
+    title: "Customers",
+    value: totalCustomersReal,
+    icon: ShoppingCart,
+  },
+  {
+    title: "Revenue",
+    value: `$${totalRevenue.toLocaleString()}`,
+    icon: DollarSign,
+  },
+];
+
+  useEffect(() => {
+  loadCustomers();
+}, []);
+
+async function loadCustomers() {
+  try {
+    console.log("🚀 Starting Supabase request...");
+    setLoading(true);
+
+    const { data, error } = await getCustomers();
+
+    console.log("📦 Supabase RAW response:");
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+    console.log("COUNT:", data?.length);
+
+    if (error) {
+      console.error("❌ Supabase error:", error);
+      setError(error.message);
+      throw error;
+    }
+    setCustomers(data || []);
+
+  } catch (error) {
+    console.error("💥 Catch error:", error);
+    setError(error.message);
+  } finally {
+    console.log("🏁 Finished loading");
+    setLoading(false);
+  }
+}
+
+// Debug info
+if (error) {
+  console.log("ERROR:", error);
+}
+
+if (loading) {
   return (
 
     <AdminLayout>
-
+       <p className="text-white">
+        Loading customers...
+      </p>
+          </AdminLayout>
+  );
+}
+return (
+  <AdminLayout>
       {/* HEADER */}
       <div className="mb-8">
 
@@ -206,7 +245,7 @@ export default function Customers() {
         <div
           className="
             grid
-            grid-cols-5
+            grid-cols-6
             gap-4
 
             px-4
@@ -223,20 +262,22 @@ export default function Customers() {
 
           <p>Name</p>
           <p>Email</p>
-          <p>Orders</p>
-          <p>Total Spent</p>
-          <p>Status</p>
+          <p>Source</p>
+          <p>Interactions</p>
+          <p>Purchases</p>
+          <p>Type</p>
 
         </div>
 
         {/* TABLE BODY */}
-        {customers.map((customer) => (
+        {Array.isArray(customers) &&
+        customers.map((customer) => (
 
           <div
             key={customer.id}
             className="
               grid
-              grid-cols-5
+              grid-cols-6
               gap-4
 
               px-4
@@ -246,7 +287,6 @@ export default function Customers() {
               border-gray-700
 
               items-center
-
               hover:bg-gray-700/30
               transition
             "
@@ -261,11 +301,15 @@ export default function Customers() {
             </p>
 
             <p className="text-gray-300">
-              {customer.orders}
+              {customer.source}
+            </p>
+
+            <p className="text-gray-300">
+              {customer.interactions_count}
             </p>
 
             <p className="text-white font-semibold">
-              {customer.spent}
+              {customer.total_purchases}
             </p>
 
             <div>
@@ -279,13 +323,17 @@ export default function Customers() {
                   font-medium
 
                   ${
-                    customer.status === "Active"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-blue-500/20 text-blue-400"
+                    customer.customer_type === "vip"
+                    ? "bg-purple-500/20 text-purple-400"
+                  : customer.customer_type === "customer"
+                    ? "bg-green-500/20 text-green-400"
+                  : customer.customer_type === "prospect"
+                    ? "bg-blue-500/20 text-blue-400"
+                  : "bg-orange-500/20 text-orange-400"
                   }
                 `}
               >
-                {customer.status}
+                {customer.customer_type}
               </span>
 
             </div>
