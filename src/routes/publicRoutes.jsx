@@ -7,7 +7,7 @@ import AboutPage from "../pages/AboutPage";
 import Contact from "../pages/Contact";
 import CartPage from "../pages/CartPage";
 import Checkout from "../pages/Checkout";
-import ThankYou from "../pages/ThankYou";
+import ThankYou from "../pages/Thankyou";
 
 export default function PublicRoutes() {
   return (
