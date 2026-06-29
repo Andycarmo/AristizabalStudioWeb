@@ -119,6 +119,11 @@ export function CartProvider({ children }) {
     );
   }
 
+  // ================= CLEAR CART =================
+    function clearCart() {
+      setCart([]);
+    }
+
   // ================= TOTAL =================
   const total = cart.reduce(
     (acc, item) =>
@@ -134,6 +139,7 @@ export function CartProvider({ children }) {
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
+        clearCart,
         total,
         isCartOpen,
         setIsCartOpen,

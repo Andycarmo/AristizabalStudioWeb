@@ -9,6 +9,7 @@ import { useCart } from "../context/CartContext";
 export default function Shop() {
   
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -25,7 +26,14 @@ export default function Shop() {
     loadProducts();
   }, []);
 
-  
+  const filteredProducts =
+  filter === "all"
+    ? products
+    : products.filter(
+        product =>
+          product.product_type === filter
+      );
+
   return (
     <div 
       className="
@@ -45,7 +53,7 @@ export default function Shop() {
         max-w-7xl 
         mx-auto
         w-full">
-
+{/*
         <h1 
         className="
         font-cocomat 
@@ -56,6 +64,115 @@ export default function Shop() {
         text-center">
           Shop
         </h1>
+  */}
+        {/* FILTERS */}
+
+        <div
+          className="
+            flex
+            flex-wrap
+            justify-center
+            gap-3
+            mb-10
+          "
+        >
+
+          <button
+            onClick={() => setFilter("all")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "all"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            All
+          </button>
+
+
+          <button
+            onClick={() => setFilter("painting")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "painting"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            Paintings
+          </button>
+
+
+          <button
+            onClick={() => setFilter("print")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "print"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            Prints
+          </button>
+
+
+          <button
+            onClick={() => setFilter("kit")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "kit"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            Soportes
+          </button>
+
+
+          <button
+            onClick={() => setFilter("brush")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "brush"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            Brushes
+          </button>
+
+
+          <button
+            onClick={() => setFilter("accessory")}
+            className={`
+              px-5 py-2 rounded-full transition
+
+              ${
+                filter === "accessory"
+                  ? "bg-studio-green text-white"
+                  : "bg-white text-studio-green"
+              }
+            `}
+          >
+            Accessories
+          </button>
+
+        </div>
 
         {/* GRID */}
         <div 
@@ -68,7 +185,7 @@ export default function Shop() {
           gap-4 sm:gap-8"
           >
 
-           {products.map((item) => {
+           {filteredProducts.map((item) => {
 
             // MAIN IMAGE
             const mainImage = item.images?.find(

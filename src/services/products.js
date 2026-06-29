@@ -8,7 +8,7 @@ export const getProducts = () =>
     .eq("type", "product")
     .order("created_at", { ascending: false });
 
-// ================= GET aALL PRODUCTS =================
+// ================= GET ALL PRODUCTS =================
 export const getAllProducts = () =>
   supabase
     .from("products")
@@ -47,7 +47,7 @@ export async function getProductBySlug(slug) {
   return data;
 }
 
-// ================= rECENT WORKS =================
+// ================= RECENT WORKS =================
 export const getRecentWorks = () =>
   supabase
     .from("products")

@@ -92,6 +92,61 @@ export default function ProductForm({
 {/* ================= Section Dimensions - Tecnique  ================= */}
       {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-4">*/}
 
+{/* ================= PRODUCT TYPE  ================= */}
+      <div className="flex flex-col gap-1">
+
+        <label>Product Type</label>
+
+        <select
+          name="product_type"
+          value={form.product_type || ""}
+          onChange={handleChange}
+          className="bg-gray-900 p-3 rounded-xl"
+        >
+
+          <option value="artwork">
+            Artworks
+          </option>
+
+          <option value="print">
+            Prints
+          </option>
+
+          <option value="book">
+            Books
+          </option>
+
+          <option value="brush">
+            Pinceles
+          </option>
+
+          <option value="kit">
+            Kit Soporte
+          </option>
+
+          <option value="accessory">
+            Accessory
+          </option>
+
+        </select>
+
+      </div>
+
+ {/* ================= SKU ================= */}
+<div className="flex flex-col gap-1">
+
+  <label>SKU</label>
+
+  <input
+    type="text"
+    name="sku"
+    placeholder="ART-001"
+    value={form.sku || ""}
+    onChange={handleChange}
+    className="bg-gray-900 p-3 rounded-xl"
+  />
+
+</div>
             {/* ================= DIMENSIONS ================= */}
             
             <div className="flex flex-col gap-1">
@@ -184,7 +239,7 @@ export default function ProductForm({
             <option value="">Select</option>
             <option value="Oil Painting">Oleo</option>
             <option value="Acrylic">Acuarela</option>
-            <option value="Digital">Digital</option>
+            <option value="Print">Digital</option>
           </select>
         </div>
 

@@ -29,6 +29,8 @@ export default function Products() {
     price: "",
     dimensions: "",
     description: "",
+    product_type: "artwork",
+    sku: "",
   });
 
   // ================= STATES =================
@@ -74,7 +76,7 @@ function handleImageChange(e) {
   setImages(prev => [...prev, ...newImages]);
 }
 
-  // ================= SET IMAGE ROLE =================
+// ================= HANDLE IMAGE CHANGE =================================
 function setImageRole(index, role) {
   setImages(prev =>
     prev.map((img, i) =>
@@ -100,6 +102,8 @@ function setImageRole(index, role) {
             height: "",
             width: "",
             description: "",
+            product_type: "artwork",
+            sku: "",
           });
 
           setImages([]); // limpia imágenes con roles (MAIN / HOVER / GALLERY)
@@ -185,13 +189,16 @@ function setImageRole(index, role) {
 
               // ================= GUARDAR EN BD =================
               const { error } = await createProduct({
-                name: form.name, description: form.description,
+                name: form.name, 
+                description: form.description,
                 slug: form.name.toLowerCase().trim().replace(/\s+/g, "-"),
                 price: Number(String(form.price).replace(/\D/g, "")),
                 // 🔥 NEW DIMENSIONS SYSTEM 
                 dimensions: `${form.height} x ${form.width} cm`,
                 images: uploadedImages,
                 technique,
+                product_type: form.product_type,
+                sku: form.sku,
               });
 
               if (error) {

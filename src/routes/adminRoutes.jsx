@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Products from "../admin/pages/Products";
 import Works from "../admin/pages/Works";
 import Orders from "../admin/pages/Orders";
+import OrderDetails from "../admin/pages/OrderDetails";
 import Customers from "../admin/pages/Customers";
 import Categories from "../admin/pages/Categories";
 import Analytics from "../admin/pages/Analytics";
@@ -65,6 +66,14 @@ export default function AdminRoutes() {
         </ProtectedRoute>}
       />
 
+      {/* ORDERS DETAILS */}
+      <Route
+        path="/studio-dashboard/orders/:orderId"
+        element={
+        <ProtectedRoute>
+          <OrderDetails />
+        </ProtectedRoute>}
+      />
 
 
       {/* CATEGORIES */}

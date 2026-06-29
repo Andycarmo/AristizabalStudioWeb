@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import CartItem from "../components/cart/CartItem";
@@ -19,7 +20,8 @@ const shippingRates = {
 
 export default function CartPage() {
 
-  const { cart, total } = useCart();
+  const { cart, total, clearCart } = useCart();
+  const navigate = useNavigate();
 
   // ================= SHIPPING =================
       const [country, setCountry] = useState("Colombia");
@@ -325,33 +327,37 @@ function handleWhatsAppCheckout() {
                     duration-300
                   "
                 >
-                  Checkout via WhatsApp
+                  Pago via WhatsApp
                 </button>
 
                 {/* CHECKOUT */}
                 <button
+                 onClick={() => 
+                  navigate("/checkout", {
+                    state: {
+                    cart,
+                    total: finalTotal,
+                    shipping,
+                    country,
+                  },
+                    })
+                  }
                   className="
                     w-full
-
                     bg-black
                     hover:bg-neutral-800
-
                     text-white
                     font-semibold
                     tracking-wide
-
                     py-4
-
                     rounded-full
-
                     shadow-md
                     hover:shadow-lg
-
                     transition-all
                     duration-300
                   "
                 >
-                  Proceed to Checkout
+                  Proceder al pago
                 </button>
 
               </div>

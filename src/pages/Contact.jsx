@@ -143,6 +143,7 @@ if (!res.ok) {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
+                  placeholder="Dirección de correo electrónico"
                 type="email"
                 className="w-full bg-white/70 p-3 outline-none"
               />
@@ -165,6 +166,7 @@ if (!res.ok) {
                 name="subject"
                 value={form.subject}
                 onChange={handleChange}
+                placeholder="¿En qué puedo ayudarte?"
                 type="text"
                 className="w-full bg-white/70 p-3 outline-none"
               />

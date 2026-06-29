@@ -40,13 +40,13 @@ export default function Dashboard() {
     {/* METRICS */}
     <DashboardMetrics products={products} />
 
-    {/* MAIN GRID */}
+    {/* MAIN GRID 
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE 
       <div className="xl:col-span-2 space-y-6">
 
-        {/* REVENUE CHART */}
+        {/* REVENUE CHART 
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
 
           <div className="flex items-center justify-between mb-6">
@@ -80,7 +80,7 @@ export default function Dashboard() {
 
         </div>
 
-        {/* TRAFFIC */}
+        {/* TRAFFIC 
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
 
           <div className="flex items-center justify-between mb-6">
@@ -116,10 +116,10 @@ export default function Dashboard() {
 
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT SIDE 
       <div className="space-y-6">
 
-        {/* BREAKDOWN */}
+        {/* BREAKDOWN 
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
 
           <h3 className="text-lg font-semibold text-white mb-5">
@@ -147,7 +147,7 @@ export default function Dashboard() {
 
         </div>
 
-        {/* QUICK LINKS */}
+        {/* QUICK LINKS 
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
 
           <h3 className="text-lg font-semibold text-white mb-5">
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
         </div>
 
-        {/* ACTIVITY */}
+        {/* ACTIVITY 
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
 
           <h3 className="text-lg font-semibold text-white mb-5">
@@ -210,7 +210,7 @@ export default function Dashboard() {
       </div>
 
     </div>
-
+*/}
   </AdminLayout>
 
 );
