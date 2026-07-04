@@ -3,6 +3,7 @@ import Header from '../components/layout/Header';
 import SectionBar from "../components/layout/SectionBar";
 import Works from "../components/sections/Works";
 import Shop from "../components/sections/Shop";
+import InsideStudio from "../components/sections/InsideStudio/InsideStudio";
 import About from '../components/sections/About';
 import Footer from "../components/layout/Footer";
 
@@ -18,6 +19,7 @@ export default function Home() {
       <Shop />
       <SectionBar title="" />
       <About />
+      <InsideStudio />
       <Footer />
     </div>
   );

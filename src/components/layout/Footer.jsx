@@ -1,49 +1,122 @@
-import Logo from '../../assets/logo.svg?react';
-import YoutubeIcon from '../../assets/youtube.svg?react';
-import InstagramIcon from '../../assets/instagram.svg?react';
-import TikTokIcon from '../../assets/tik-tok.svg?react';
+import Logo from "../../assets/logo.svg?react";
+import YoutubeIcon from "../../assets/youtube.svg?react";
+import InstagramIcon from "../../assets/instagram.svg?react";
+import TikTokIcon from "../../assets/tik-tok.svg?react";
 
 export default function Footer() {
   return (
-    <footer className="bg-studio-green text-studio-pink py-10 px-4">
+    <footer className="bg-studio-green text-studio-pink">
 
-      <div className="max-w-7xl mx-auto flex flex-col items-center gap-6">
+      <div className="max-w-7xl mx-auto px-6 py-8">
 
-        {/* LOGO */}
-        <Logo className="w-20 h-auto" />
+        {/* Contenido principal */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
 
-        {/* NOMBRE */}
-        <h3 className="text-xl md:text-2xl font-cocomat text-center">
-          Aristizabal Studio
-        </h3>
+          {/* Logo */}
+          <div className="flex items-center gap-4">
 
-        {/* REDES */}
-        <div className="flex items-center gap-6">
+            <Logo
+              className="
+                w-16 md:w-20
+                h-auto
+                transition-transform
+                duration-500
+                hover:scale-105
+              "
+            />
 
-        {/* >>>>>>>>>>>>>   YOUTUBE    <<<<<<<<<<<<<<<*/}
-          <a href="https://www.youtube.com/@aristizabalstudio" className="group">
-            <YoutubeIcon className="h-7 md:h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
-          </a>
+            <div>
 
-        {/* >>>>>>>>>>>>>   INSTAGRAM    <<<<<<<<<<<<<<<*/}
-          <a href="#" className="group">
-            <InstagramIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
-          </a>
+              <h3 className="font-cocomat text-2xl">
+                Aristizabal Studio
+              </h3>
 
-        {/* >>>>>>>>>>>>>   TIKTOK    <<<<<<<<<<<<<<<*/}
-          <a href="https://www.tiktok.com/@aristizabal.studio" className="group">
-            <TikTokIcon className="h-6 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:brightness-125" />
-          </a>
+              <p className="text-sm opacity-70">
+                Contemporary Art
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* Redes */}
+          <div className="flex items-center gap-5">
+
+            {/* YouTube */}
+            <a
+              href="https://www.youtube.com/@aristizabalstudio"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="
+                opacity-70
+                hover:opacity-100
+                transition-all
+                duration-300
+                hover:scale-110
+              "
+            >
+              <YoutubeIcon className="h-7 w-auto" />
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="
+                opacity-70
+                hover:opacity-100
+                transition-all
+                duration-300
+                hover:scale-110
+              "
+            >
+              <InstagramIcon className="h-6 w-auto" />
+            </a>
+
+            {/* TikTok */}
+            <a
+              href="https://www.tiktok.com/@aristizabal.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              className="
+                opacity-70
+                hover:opacity-100
+                transition-all
+                duration-300
+                hover:scale-110
+              "
+            >
+              <TikTokIcon className="h-6 w-auto" />
+            </a>
+
+          </div>
 
         </div>
 
-        {/* COPYRIGHT */}
-        <p className="text-sm text-center opacity-80">
-          © {new Date().getFullYear()} Aristizabal Studio. All rights reserved. Made with ❤ by myself.
-        </p>
+        {/* Separador */}
+        <div className="border-t border-studio-pink/20 mt-8 pt-5">
+
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+
+            <p className="text-sm opacity-60 text-center md:text-left">
+              © {new Date().getFullYear()} Aristizabal Studio. All rights reserved.
+            </p>
+
+            <p className="text-xs opacity-50">
+              Made with ❤ by myself.
+            </p>
+
+          </div>
+
+        </div>
 
       </div>
 
     </footer>
+
   );
 }
