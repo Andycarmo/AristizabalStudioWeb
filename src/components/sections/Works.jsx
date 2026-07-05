@@ -37,7 +37,7 @@ export default function Gallery() {
     {/* IMAGEN PRINCIPAL */}
     <Link to="/works">
     <img
-      src="/gallery/obras/miscelaneous/collage-01.webp"
+      src="/gallery/obras/miscelaneous/collage-01.avif"
       alt="Recent work preview"
       loading="lazy"
       className="
