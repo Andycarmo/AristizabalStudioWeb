@@ -76,7 +76,7 @@ export default function About() {
           {/* IMAGEN PRINCIPAL */}
           <Link to="/about">
           <img
-              src="/gallery/artista/floor-01.webp"
+              src="/gallery/artista/exterior-01-1.webp"
               alt="Artista pintando exterior"
               loading="lazy"
               className="
