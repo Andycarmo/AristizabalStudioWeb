@@ -1,3 +1,5 @@
+import ImageOptimizationSummary from "./ImageOptimizationSummary";
+
 export default function ProductForm({
   form,
   handleChange,
@@ -27,6 +29,10 @@ export default function ProductForm({
   handleUpdateProduct,
 
     imageInputRef, // 👈 🔥 ESTO FALTABA
+
+      optimizationSummary,
+      showOptimizationDetails,
+      setShowOptimizationDetails,
 }) {
 
   return (
@@ -264,6 +270,12 @@ export default function ProductForm({
             <p className="text-xs text-gray-400 mb-3">
               Seleccionadas: {images.length}
             </p>
+
+          <ImageOptimizationSummary
+              optimizationSummary={optimizationSummary}
+              showDetails={showOptimizationDetails}
+              setShowDetails={setShowOptimizationDetails}
+            />
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 

@@ -137,19 +137,43 @@ async function deleteOrder(orderId) {
     return;
   try {
     // Eliminar items primero
-    await supabase
-      .from("order_items")
-      .delete()
-      .eq("order_id", orderId);
+
+
+
+    //await supabase
+    //  .from("order_items")
+    //  .delete()
+    //  .eq("order_id", orderId);
+
+
+                                                                        const { data, error } = await supabase
+                                                                            .from("orders")
+                                                                            .delete()
+                                                                            .eq("id", orderId)
+                                                                            .select();
+                                                                          console.log("ORDER ID:", orderId);
+                                                                          console.log("DELETE DATA:", data);
+                                                                          console.log("DELETE ERROR:", error);
+
+                                                                        if (error) {
+                                                                          throw error;
+}
+
+
+
+
+
 
     // Eliminar pedido
-    const { error } = await supabase
+    //const { error } = await supabase
+    const { error: orderError } = await supabase
       .from("orders")
       .delete()
       .eq("id", orderId);
 
-    if (error)
-      throw error;
+console.log("DELETE ORDER:", orderError);
+    if (orderError)
+      throw orderError;
 
     // Actualizar estado local
     setOrders(
@@ -166,13 +190,16 @@ async function deleteOrder(orderId) {
       timer: 2000,
       showConfirmButton: false
     });
-  } catch (err) {
-    console.error(err);
-    Swal.fire({
-      title: "Error",
-      text: "No fue posible eliminar el pedido.",
-      icon: "error"
-    });
+  }catch (err) {
+  console.error("DELETE ORDER ERROR:", err);
+  Swal.fire({
+    title: "Error",
+    text: err.message,
+    icon: "error",
+    background: "#1f2937",
+    color: "#fff",
+  });
+
   }
 
 }
