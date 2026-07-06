@@ -3,12 +3,13 @@ import Login from "../admin/pages/Login";
 import Dashboard from "../admin/pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Products from "../admin/pages/Products";
-import Works from "../admin/pages/Works";
+import RecentWorks from "../admin/pages/RecentWorksAdmin";
 import Orders from "../admin/pages/Orders";
 import OrderDetails from "../admin/pages/OrderDetails";
 import Customers from "../admin/pages/Customers";
 import Categories from "../admin/pages/Categories";
 import Analytics from "../admin/pages/Analytics";
+import Website from "../admin/pages/Website";
 import Settings from "../admin/pages/Settings";
 
 export default function AdminRoutes() {
@@ -37,12 +38,12 @@ export default function AdminRoutes() {
         }
       />
 
-      {/* WORKS */}
+      {/* RECENT WORKS */}
       <Route
-        path="/studio-dashboard/works"
+        path="/studio-dashboard/recent-works-admin"
         element={
           <ProtectedRoute>
-            <Works />
+            <RecentWorks />
           </ProtectedRoute>
         }
       />
@@ -96,6 +97,15 @@ export default function AdminRoutes() {
         }
       />
 
+      {/* SETTINGS */}
+      <Route
+        path="/studio-dashboard/website"
+        element={
+          <ProtectedRoute>
+            <Website />
+          </ProtectedRoute>
+        }
+      />
 
       {/* SETTINGS */}
       <Route

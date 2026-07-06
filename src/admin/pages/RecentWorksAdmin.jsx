@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { optimizeImage,} from "../../utils/imageOptimizer";
+import ImageOptimizationSummary from "../components/ImageOptimizationSummary";
 import { supabase } from "../../config/supabase";
 import AdminLayout from "../layouts/AdminLayout";
 import Swal from "sweetalert2";
@@ -6,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 
-export default function Works() {
+export default function RecentWorksAdmin() {
 
   // ================= STATE =================
 
@@ -19,25 +21,98 @@ export default function Works() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [works, setWorks] = useState([]);
+  const [optimizationSummary, setOptimizationSummary] = useState(null);
+  const [showOptimizationDetails, setShowOptimizationDetails] = useState(false);
 
-  // ================= HANDLE IMAGE CHANGE =================
 
-  function handleImageChange(e) {
 
-      const files = [...e.target.files];
+// ================= HANDLE IMAGE CHANGE =================
+async function handleImageChange(e) {
 
-      setImages(files);
+    const files = Array.from(e.target.files);
 
-      // PREVIEW
-      if (files.length > 0) {
+    const optimizedImages = await Promise.all(
 
-        const imageUrl = URL.createObjectURL(files[0]);
+      files.map(async (file) => {
 
-        setPreview(imageUrl);
+        const optimized = await optimizeImage(
+          file,
+          "recent_work"
+        );
 
-      }
+        return {
+
+          file: optimized.file,
+
+          preview: optimized.preview,
+
+          stats: optimized,
+
+        };
+
+      })
+
+    );
+
+    setImages(optimizedImages);
+
+          const originalBytes = optimizedImages.reduce(
+
+        (acc, img) => acc + img.stats.original.size,
+
+        0
+
+      );
+
+      const optimizedBytes = optimizedImages.reduce(
+
+        (acc, img) => acc + img.stats.result.size,
+
+        0
+
+      );
+
+      const optimizedCount = optimizedImages.filter(
+
+        img => img.stats.optimized
+
+      ).length;
+
+      const alreadyOptimized = optimizedImages.filter(
+
+        img => !img.stats.optimized
+
+      ).length;
+
+      setOptimizationSummary({
+
+        totalImages: optimizedCount,
+
+        alreadyOptimized,
+
+        originalBytes,
+
+        optimizedBytes,
+
+        reduction: (
+
+          (1 - optimizedBytes / originalBytes) * 100
+
+        ).toFixed(1),
+
+        details: optimizedImages,
+
+      });
+
+    if (optimizedImages.length > 0) {
+
+      setPreview(
+        optimizedImages[0].preview
+      );
 
     }
+
+  }
 
   // ================= UPLOAD IMAGES =================
 
@@ -47,11 +122,15 @@ export default function Works() {
 
     for (const image of images) {
 
-      const fileName = `${Date.now()}-${image.name}`;
+      const originalName = image.file.name
+        .replace(/\.[^/.]+$/, "");
+
+      const fileName =
+        `${Date.now()}-${originalName}.webp`;
 
       const { error } = await supabase.storage
         .from("products")
-        .upload(fileName, image);
+        .upload(fileName, image.file);
 
       if (error) {
 
@@ -167,17 +246,40 @@ function getStoragePath(url) {
   return decodeURIComponent(parts[1]);
 }
 
+  // ================= FORMAT BYTES =================
+function formatBytes(bytes) {
+
+  if (!bytes) return "0 Bytes";
+
+  const sizes = [
+    "Bytes",
+    "KB",
+    "MB",
+    "GB"
+  ];
+
+  const i = Math.floor(
+    Math.log(bytes) /
+    Math.log(1024)
+  );
+
+  return `${(
+    bytes /
+    Math.pow(1024, i)
+  ).toFixed(2)} ${sizes[i]}`;
+
+}
+
   // ================= RESET CAMPOS  =================
   function resetForm() {
 
   setName("");
-
   setImages([]);
-
   setPreview(null);
-
   setInputKey(Date.now());
-
+// Resumen de optimización
+  setOptimizationSummary(null);
+  setShowOptimizationDetails(false);
 }
 
 // ================= CONFIRM DELETE =================
@@ -358,6 +460,19 @@ async function handleDeleteWork(work) {
                     rounded-xl
                   "
                 />
+                  {/* RESUMEN DE OPTIMIZACIÓN */}
+
+                    <ImageOptimizationSummary
+
+                      optimizationSummary={optimizationSummary}
+
+                      showDetails={showOptimizationDetails}
+
+                      setShowDetails={setShowOptimizationDetails}
+
+                      formatBytes={formatBytes}
+
+                    />
 
               </div>
 

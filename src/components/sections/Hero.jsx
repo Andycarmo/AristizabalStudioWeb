@@ -1,16 +1,37 @@
 import { useEffect, useState } from "react";
+import { getSection } from "../../services/websiteService";
 
 export default function Hero() {
   const [offset, setOffset] = useState(0);
+const [hero, setHero] = useState({
+  intro_text: "",
+  highlight_1: "",
+  middle_text: "",
+  highlight_2: "",
+  ending_text: "",
+  image: "",
+});
 
-  useEffect(() => {
+async function loadHero() {
+    try {
+        const data = await getSection("hero");
+        console.log("HERO:", data);
+        setHero(data);
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+
+useEffect(() => {
+    loadHero();
     const handleScroll = () => {
-      setOffset(window.scrollY * 2); // velocidad del parallax
+        setOffset(window.scrollY * 2);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () =>
+        window.removeEventListener("scroll", handleScroll);
+}, []);
 
   return (
     <section className="
@@ -36,22 +57,33 @@ export default function Hero() {
       <div className="relative z-10 flex items-center h-full px-6 md:px-12 lg:px-20">
         <div className="fade-up-3 max-w-xl text-left">
           
-          <h1 className="text-white 
-          -mt-4 
-          text-3xl sm:text-4xl md:text-5xl lg:text-6xl
-          font-cocomat 
-          tracking-wide 
-          leading-tight 
-          drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-            A{" "}
+         <h1
+            className="
+              text-white
+              -mt-4
+              text-3xl
+              sm:text-4xl
+              md:text-5xl
+              lg:text-6xl
+              font-cocomat
+              tracking-wide
+              leading-tight
+              drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]
+            "
+          >
+            {hero.intro_text}{" "}
+
             <span className="block-orange">
-              creative
+              {hero.highlight_1}
             </span>{" "}
-            space for storytelling through{" "}
+
+            {hero.middle_text}{" "}
+
             <span className="block-fucsia">
-              vibrant
+              {hero.highlight_2}
             </span>{" "}
-            illustrations and thoughtful design.
+
+            {hero.ending_text}
           </h1>
          
         </div>

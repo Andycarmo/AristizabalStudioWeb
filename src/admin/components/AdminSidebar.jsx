@@ -8,6 +8,7 @@ import {
   LayoutGrid,
   BarChart3,
   Settings,
+  Globe,
   Images,
 } from "lucide-react";
 
@@ -78,7 +79,7 @@ export default function Sidebar() {
         </NavLink>
 
         <NavLink 
-        to="/studio-dashboard/works"
+        to="/studio-dashboard/recent-works-admin"
         className={({ isActive }) =>
             `
               flex
@@ -221,6 +222,34 @@ export default function Sidebar() {
         <BarChart3 size={18} />
           Analytics
         </NavLink>
+
+          <NavLink 
+              to="/studio-dashboard/website"
+              className={({ isActive }) =>
+                  `
+                    flex
+                    items-center
+                    gap-2
+
+                    px-3
+                    py-2
+                    rounded-xl
+
+                    transition-all
+                    duration-200
+
+                    ${
+                      isActive
+                        ? "bg-white text-black font-semibold"
+                        : "text-gray-300 hover:text-white hover:bg-gray-800"
+                    }
+                  `
+                }
+              >
+
+              <Globe size={20} />
+                Website
+              </NavLink>
 
         <NavLink
           to="/studio-dashboard/settings"

@@ -227,7 +227,11 @@ function setImageRole(index, role) {
                   }
 
                   // 🔥  ================= NEW IMAGE =================
-                  const fileName = `${Date.now()}-${img.file.name}`;
+                  const originalName = img.file.name
+                    .replace(/\.[^/.]+$/, "");
+                  const fileName =
+                    `${Date.now()}-${originalName}.webp`;
+                    
 
                   const { error } = await supabase.storage
                     .from("products")

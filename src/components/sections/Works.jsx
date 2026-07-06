@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"; // si usas React Router
 import Button, { buttonColors } from "../../components/ui/Button.jsx";
 import Bouquet from '../../assets/bouquet.svg?react';
 
-export default function Gallery() {
+export default function Works() {
   return (
     <section className="
     relative bg-[#FFE091] 
